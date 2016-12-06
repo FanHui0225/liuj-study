@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='GBK' ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+    <appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="[%7r] %6p - %30.30c - %m \n"/>
+        </layout>
+        <filter class="org.apache.log4j.varia.LevelRangeFilter">
+            <param name="LevelMin" value="DEBUF"/>
+            <param name="LevelMax" value="FATAL"/>
+        </filter>
+    </appender>
+    <appender name="FILE-ALL" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="DatePattern" value="'.'yyyy-MM-dd"/>
+        <param name="file" value="~/logs/porsche-info.log"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="[%d{yyyy-MM-dd HH:mm:ss.S}] %p %c{2}(%F:%L) - %m%n"/>
+        </layout>
+    </appender>
+    <appender name="FILE-ERROR" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="DatePattern" value="'.'yyyy-MM-dd"/>
+        <param name="file" value="~/logs/porsche-error.log"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="[%d{yyyy-MM-dd HH:mm:ss.S}] %p %c{2}(%F:%L) - %m%n"/>
+        </layout>
+        <filter class="org.apache.log4j.varia.LevelRangeFilter">
+            <param name="LevelMin" value="WARN"/>
+        </filter>
+    </appender>
+    <root>
+        <priority value="DEBUG"/>
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILE-ALL"/>
+        <appender-ref ref="FILE-ERROR"/>
+    </root>
+
+    <!--<appender name="IBatis" class="org.apache.log4j.ConsoleAppender">-->
+    <!--<layout class="org.apache.log4j.PatternLayout">-->
+    <!--<param name="ConversionPattern"-->
+    <!--value="%-4r [%t] %-5p %c %x - %m%n" />-->
+    <!--</layout>-->
+    <!--<filter class="org.apache.log4j.varia.LevelRangeFilter">-->
+    <!--<param name="LevelMin" value="DEBUG" />-->
+    <!--<param name="LevelMax" value="DEBUG" />-->
+    <!--</filter>-->
+    <!--</appender>-->
+    <!--<logger name="com.ibatis" additivity="true">-->
+    <!--<level value="DEBUG" />-->
+    <!--</logger>-->
+    <!--<logger name="java.sql.Connection" additivity="true">-->
+    <!--<level value="DEBUG" />-->
+    <!--</logger>-->
+
+    <!--<logger name="java.sql.Statement" additivity="true">-->
+    <!--<level value="DEBUG" />-->
+    <!--</logger>-->
+    <!--<logger name="java.sql.PreparedStatement" additivity="true">-->
+    <!--<level value="DEBUG" />-->
+    <!--<appender-ref ref="IBatis" />-->
+    <!--</logger>-->
+    <!--<logger name="java.sql.ResultSet" additivity="true">-->
+    <!--<level value="DEBUG" />-->
+    <!--<appender-ref ref="IBatis" />-->
+    <!--</logger>-->
+</log4j:configuration>
