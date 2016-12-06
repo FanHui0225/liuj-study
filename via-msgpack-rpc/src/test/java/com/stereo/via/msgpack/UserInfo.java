@@ -1,7 +1,7 @@
 package com.stereo.via.msgpack;
 
+import com.stereo.via.ipc.exc.IpcRuntimeException;
 import org.msgpack.BeanMessage;
-import org.sprintdragon.ipc.exc.IpcRuntimeException;
 
 import java.lang.reflect.Method;
 
