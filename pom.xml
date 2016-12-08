@@ -8,6 +8,7 @@
   <modules>
     <module>via-rpc</module>
     <module>via-msgpack-rpc</module>
+      <module>via-common</module>
   </modules>
   <packaging>pom</packaging>
 
