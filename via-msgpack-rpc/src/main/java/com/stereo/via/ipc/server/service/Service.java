@@ -6,7 +6,7 @@ import com.stereo.via.ipc.server.api.IService;
 import com.stereo.via.ipc.server.api.IServiceContext;
 
 /**
- * Action虚类(可相互广播)
+ * 服务基类(可相互广播)
  * 
  * @author stereo
  */
