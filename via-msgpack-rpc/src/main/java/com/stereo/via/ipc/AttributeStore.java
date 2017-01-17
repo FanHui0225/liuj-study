@@ -1,4 +1,4 @@
-package com.stereo.via.ipc.server.service;
+package com.stereo.via.ipc;
 
 import com.stereo.via.ipc.server.api.IAttributeStore;
 import com.stereo.via.ipc.server.api.ICastingAttributeStore;

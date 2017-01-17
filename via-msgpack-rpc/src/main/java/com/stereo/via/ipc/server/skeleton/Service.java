@@ -1,9 +1,9 @@
-package com.stereo.via.ipc.server.service;
+package com.stereo.via.ipc.server.skeleton;
 
 
 import com.stereo.via.ipc.server.api.INotification;
 import com.stereo.via.ipc.server.api.IService;
-import com.stereo.via.ipc.server.api.IServiceContext;
+import com.stereo.via.ipc.server.api.ISkeletonContext;
 
 /**
  * 服务基类(可相互广播)
@@ -13,7 +13,7 @@ import com.stereo.via.ipc.server.api.IServiceContext;
 public abstract class Service implements IService {
 
 	protected String serviceName = "serviceName";
-	protected IServiceContext actionContext;
+	protected ISkeletonContext actionContext;
 
 	@Override
 	public void onRegister() {
@@ -58,7 +58,7 @@ public abstract class Service implements IService {
 		return sendNotification(notificationName,null,null);
 	}
 
-	public void setServiceContext(IServiceContext actionContext) {
+	public void setServiceContext(ISkeletonContext actionContext) {
 		this.actionContext = actionContext;
 	}
 }

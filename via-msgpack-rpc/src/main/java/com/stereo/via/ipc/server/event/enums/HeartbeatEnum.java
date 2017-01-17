@@ -6,6 +6,6 @@ package com.stereo.via.ipc.server.event.enums;
 public enum HeartbeatEnum {
     REGISTER,
     UNREGISTER,
-    PING,
+    HEARTBEAT,
     TOPIC_PUSH //server ---> client 推送数据
 }

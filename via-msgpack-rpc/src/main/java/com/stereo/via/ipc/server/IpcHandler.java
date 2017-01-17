@@ -5,8 +5,10 @@ import com.stereo.via.ipc.Constants;
 import com.stereo.via.ipc.Heartbeat;
 import com.stereo.via.ipc.Packet;
 import com.stereo.via.ipc.server.api.IpcEngine;
+import com.stereo.via.ipc.server.event.HeartbeatEvent;
 import com.stereo.via.ipc.server.event.RequestEvent;
 import com.stereo.via.ipc.server.event.ResponseEvent;
+import com.stereo.via.ipc.server.event.enums.HeartbeatEnum;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import org.slf4j.Logger;
@@ -40,11 +42,14 @@ public class IpcHandler extends ChannelInboundHandlerAdapter implements IpcEngin
                     case Constants.TYPE_RESPONSE:
                         dispatcher.getEventHandler().handle(new ResponseEvent(packet,ctx));
                         break;
-                    case Constants.TYPE_HEARTBEAT_REQUEST:
+                    case Constants.TYPE_HEARTBEAT_REQUEST_REGISTER:
+                        dispatcher.getEventHandler().handle(new HeartbeatEvent(HeartbeatEnum.REGISTER,ctx,packet.getHeartbeat()));
                         break;
-                    case Constants.TYPE_HEARTBEAT_RESPONSE:
+                    case Constants.TYPE_HEARTBEAT:
+                        dispatcher.getEventHandler().handle(new HeartbeatEvent(HeartbeatEnum.HEARTBEAT,ctx,packet.getHeartbeat()));
                         break;
                     case Constants.TYPE_HEARTBEAT_REQUEST_UNREGISTER:
+                        dispatcher.getEventHandler().handle(new HeartbeatEvent(HeartbeatEnum.UNREGISTER,ctx,packet.getHeartbeat()));
                         break;
                     default:
                         LOG.error("IpcHandler.channelRead error msg is " + msg);

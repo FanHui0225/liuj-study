@@ -1,10 +1,10 @@
-package com.stereo.via.ipc.server.service;
+package com.stereo.via.ipc.server.skeleton;
 
 import com.stereo.via.ipc.Constants;
 import com.stereo.via.ipc.exc.MethodNotFoundException;
 import com.stereo.via.ipc.exc.NotAllowedException;
 import com.stereo.via.ipc.server.api.IServiceCall;
-import com.stereo.via.ipc.server.api.IServiceContext;
+import com.stereo.via.ipc.server.api.ISkeletonContext;
 import com.stereo.via.ipc.server.api.IServiceInvoker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,10 +53,10 @@ public final class ServiceInvoker implements IServiceInvoker {
 		}
 	}
 
-	private IServiceContext servicer;
+	private ISkeletonContext servicer;
 	private Set<MethodCache> methodCaches = new CopyOnWriteArraySet<MethodCache>();
 
-	public ServiceInvoker(IServiceContext servicer) {
+	public ServiceInvoker(ISkeletonContext servicer) {
 		this.servicer = servicer;
 	}
 
@@ -89,7 +89,7 @@ public final class ServiceInvoker implements IServiceInvoker {
 			String interfaceName = call.getInterfaceName();
 			call.setException(new ServiceNotFoundException(interfaceName));
 			call.setStatus(Constants.STATUS_SERVICE_NOT_FOUND);
-			LOG.warn("service not found: {}", interfaceName);
+			LOG.warn("skeleton not found: {}", interfaceName);
 			return false;
 		} else {
 			String methodName = call.getMethodName();

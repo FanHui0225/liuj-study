@@ -1,8 +1,8 @@
 package com.stereo.via.ipc;
 
 import com.stereo.via.ipc.server.api.INotification;
-import com.stereo.via.ipc.server.service.RequestContext;
-import com.stereo.via.ipc.server.service.Service;
+import com.stereo.via.ipc.server.skeleton.RequestContext;
+import com.stereo.via.ipc.server.skeleton.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.HashMap;

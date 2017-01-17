@@ -121,8 +121,8 @@ public abstract class HttpSkeleton extends HttpServlet implements
                 _homeImpl = homeClass.newInstance();
                 System.out.println();
                 init(_homeImpl);
-            } else if (getInitParameter("service-class") != null) {
-                String className = getInitParameter("service-class");
+            } else if (getInitParameter("skeleton-class") != null) {
+                String className = getInitParameter("skeleton-class");
 
                 Class<?> homeClass = loadClass(className);
 

@@ -1,7 +1,7 @@
-package com.stereo.via.ipc.server.service;
+package com.stereo.via.ipc.server.skeleton;
 
 import com.stereo.via.event.Event;
-import com.stereo.via.ipc.server.api.IServiceContext;
+import com.stereo.via.ipc.server.api.ISkeletonContext;
 import com.stereo.via.ipc.server.event.RequestEvent;
 import com.stereo.via.ipc.server.event.ResponseEvent;
 import com.stereo.via.ipc.util.Daemon;
@@ -9,7 +9,6 @@ import com.stereo.via.ipc.util.ThreadPoolUtils;
 import io.netty.channel.Channel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.stereo.via.event.EventHandler;
 import com.stereo.via.ipc.Config;
 import com.stereo.via.ipc.Constants;
 import com.stereo.via.ipc.exc.IpcRuntimeException;
@@ -17,13 +16,12 @@ import com.stereo.via.ipc.server.api.IServiceHandler;
 import com.stereo.via.ipc.server.api.IServiceInvoker;
 import com.stereo.via.ipc.server.event.enums.ServiceEnum;
 import com.stereo.via.service.AbstractService;
-
 import java.util.concurrent.*;
 
 /**
  * Created by stereo on 16-8-18.
  */
-public class ServiceHandler extends AbstractService implements IServiceHandler,EventHandler<Event<ServiceEnum>> {
+public class ServiceHandler extends AbstractService implements IServiceHandler{
 
     private static Logger LOG = LoggerFactory.getLogger(ServiceHandler.class);
 
@@ -31,7 +29,7 @@ public class ServiceHandler extends AbstractService implements IServiceHandler,E
     private ExecutorService handlerPool;
     private final IServiceInvoker serviceInvoker;
 
-    public ServiceHandler(IServiceContext servicer, Config config)
+    public ServiceHandler(ISkeletonContext servicer, Config config)
     {
         super("ServiceHandler");
         serviceInvoker = new ServiceInvoker(servicer);
@@ -113,12 +111,14 @@ public class ServiceHandler extends AbstractService implements IServiceHandler,E
     }
 
     @Override
-    public void handle(final Event<ServiceEnum> event) {
+    public void handle(final Event<ServiceEnum> event)
+    {
         ServiceEnum type = event.getType();
         switch (type)
         {
             case REQUEST:
-                handlerPool.submit(new Runnable() {
+                handlerPool.submit(new Runnable()
+                {
                     @Override
                     public void run() {
                         try {

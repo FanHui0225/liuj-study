@@ -2,14 +2,15 @@ package com.stereo.via.ipc.server.api;
 
 
 import com.stereo.via.event.Dispatcher;
+import com.stereo.via.ipc.server.skeleton.Liveliness;
 
 /**
  * 
- * Action控制器上下文
+ * Skeleton控制器上下文
  * 
  * @author stereo
  */
-public interface IServiceContext {
+public interface ISkeletonContext {
 
 	/**
 	 * 
@@ -74,10 +75,6 @@ public interface IServiceContext {
 	public boolean hasService(String serviceName);
 
 	public IServiceHandler getServiceHandler();
-
-	/**
-	 * 中央处理器
-	 * @return
-     */
 	public Dispatcher getDispatcher();
+	public Liveliness getLiveliness();
 }

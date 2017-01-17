@@ -17,5 +17,5 @@ public interface IService extends INotifier {
 
 	public void handleNotification(INotification notification);
 
-	public void setServiceContext(IServiceContext actionContext);
+	public void setServiceContext(ISkeletonContext actionContext);
 }

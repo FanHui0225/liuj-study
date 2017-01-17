@@ -24,6 +24,9 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
 import java.net.InetSocketAddress;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
@@ -33,6 +36,8 @@ import java.util.concurrent.TimeUnit;
 public class ClientProxy extends AbstractService {
 
     private static Logger LOG = LoggerFactory.getLogger(ClientProxy.class);
+
+    private String clientId;
 
     private Config config;
 
@@ -55,6 +60,7 @@ public class ClientProxy extends AbstractService {
         super("ClientProxy"+":"+config.getRemoteAddress().toString());
         this.config = config;
         this.loader = loader;
+        this.clientId = UUID.randomUUID().toString();
     }
 
     @Override

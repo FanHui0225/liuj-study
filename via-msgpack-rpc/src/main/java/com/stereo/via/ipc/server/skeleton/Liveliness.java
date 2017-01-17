@@ -1,28 +1,42 @@
-package com.stereo.via.ipc.server.service;
+package com.stereo.via.ipc.server.skeleton;
 
-import com.stereo.via.event.Dispatcher;
 import com.stereo.via.event.EventHandler;
 import com.stereo.via.ipc.Heartbeat;
 import com.stereo.via.ipc.server.event.HeartbeatEvent;
 import com.stereo.via.ipc.server.event.enums.HeartbeatEnum;
 import com.stereo.via.ipc.util.AbstractLivelinessMonitor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.*;
 
 /**
  * Created by stereo on 16-8-24.
  */
 public class Liveliness extends AbstractLivelinessMonitor<Heartbeat> implements EventHandler<HeartbeatEvent>{
 
-    private int expireIntvl;
-    private EventHandler dispatcher;
+    private static Logger LOG = LoggerFactory.getLogger(Liveliness.class);
 
-    public Liveliness(int expireIntvl, Dispatcher dispatcher) {
+    private int expireIntvl;
+    private LiveExpired liveExpired;
+
+    public Liveliness(int expireIntvl,LiveExpired liveExpired) {
         super("Liveliness");
         this.expireIntvl = expireIntvl;
-        this.dispatcher = dispatcher.getEventHandler();
+        this.liveExpired = liveExpired;
+    }
+
+    public Set<Heartbeat> living()
+    {
+        return Collections.unmodifiableSet(running.keySet());
     }
 
     @Override
     protected void expire(Heartbeat heartbeat) {
+        if (liveExpired == null)
+            LOG.info("client " + heartbeat.getClient_id() + " expired");
+        else
+            liveExpired.expire(heartbeat);
     }
 
     @Override
@@ -34,16 +48,21 @@ public class Liveliness extends AbstractLivelinessMonitor<Heartbeat> implements 
     @Override
     public void handle(HeartbeatEvent event) {
         HeartbeatEnum type = event.getType();
+        Heartbeat heartbeat = event.getHeartbeat();
         switch (type)
         {
             case REGISTER:
+                register(heartbeat);
                 break;
             case UNREGISTER:
+                unregister(heartbeat);
                 break;
-            case PING:
+            case HEARTBEAT:
+                receivedPing(heartbeat);
                 break;
             case TOPIC_PUSH:
                 break;
         }
     }
+
 }

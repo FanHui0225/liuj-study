@@ -1,7 +1,7 @@
 package com.stereo.via.ipc;
 
+import com.stereo.via.ipc.server.skeleton.LiveExpired;
 import com.stereo.via.ipc.util.NetUtils;
-
 import java.net.InetSocketAddress;
 
 public final class Config {
@@ -26,6 +26,7 @@ public final class Config {
 	private String businessPoolType = Constants.THREADPOOL_TYPE_CACHED;//线程池类型
 	private String businessPoolQueueType = Constants.QUEUE_TYPE_NORMAL;  // 队列类型
 	private int businessPoolQueueSize = 0; // 队列大小
+	private LiveExpired liveExpired;//掉线监控
 
 	public Config(){
 		this(8099);
@@ -209,6 +210,14 @@ public final class Config {
 
 	public void setBusinessPoolQueueSize(int businessPoolQueueSize) {
 		this.businessPoolQueueSize = businessPoolQueueSize;
+	}
+
+	public LiveExpired getLiveExpired() {
+		return liveExpired;
+	}
+
+	public void setLiveExpired(LiveExpired liveExpired) {
+		this.liveExpired = liveExpired;
 	}
 
 	@Override

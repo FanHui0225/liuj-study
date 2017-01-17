@@ -40,9 +40,9 @@ public class ClientHandler extends ChannelInboundHandlerAdapter {
                     else
                         LOG.debug("ClientHandler.channelRead discard packet:" + packet);
                     break;
-                case Constants.TYPE_HEARTBEAT_REQUEST:
+                case Constants.TYPE_HEARTBEAT:
                     break;
-                case Constants.TYPE_HEARTBEAT_RESPONSE:
+                case Constants.TYPE_HEARTBEAT_REQUEST_REGISTER:
                     break;
                 case Constants.TYPE_HEARTBEAT_REQUEST_UNREGISTER:
                     break;

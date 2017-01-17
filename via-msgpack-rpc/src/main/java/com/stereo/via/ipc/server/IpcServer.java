@@ -1,6 +1,7 @@
 package com.stereo.via.ipc.server;
 
-import com.stereo.via.ipc.server.api.IServiceContext;
+import com.stereo.via.ipc.server.api.ISkeletonContext;
+import com.stereo.via.ipc.server.skeleton.SkeletonContext;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.epoll.EpollEventLoopGroup;
@@ -18,7 +19,6 @@ import org.slf4j.LoggerFactory;
 import com.stereo.via.ipc.Config;
 import com.stereo.via.ipc.codec.MsgPackDecoder;
 import com.stereo.via.ipc.codec.MsgPackEncoder;
-import com.stereo.via.ipc.server.service.ServiceContext;
 import com.stereo.via.service.AbstractService;
 import com.stereo.via.service.Service;
 
@@ -34,7 +34,7 @@ public class IpcServer extends AbstractService {
     private ServerBootstrap bootstrap;
     private EventLoopGroup bossGroup;
     private EventLoopGroup workerGroup;
-    private IServiceContext serviceContext;
+    private ISkeletonContext serviceContext;
     private IpcRegistry registry;
 
     public IpcServer(){
@@ -49,7 +49,7 @@ public class IpcServer extends AbstractService {
     @Override
     protected void serviceInit() throws Exception {
         //业务上下文
-        serviceContext = new ServiceContext(config);
+        serviceContext = new SkeletonContext(config);
         ((Service)serviceContext).init();
 
         registry = new IpcRegistry(serviceContext);
@@ -138,9 +138,5 @@ public class IpcServer extends AbstractService {
 
     public Config getConfig() {
         return config;
-    }
-
-    public IServiceContext getServiceContext() {
-        return serviceContext;
     }
 }

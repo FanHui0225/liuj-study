@@ -12,17 +12,8 @@ import io.netty.channel.ChannelHandlerContext;
 public class HeartbeatEvent implements Event<HeartbeatEnum> {
     private long timestamp;
     private HeartbeatEnum type;
-    private String topic;
-    private Object topicData;
     private Heartbeat heartbeat;
     private ChannelHandlerContext channelHandlerContext;
-
-    public HeartbeatEvent(HeartbeatEnum type, String topic, Object topicData)
-    {
-        this(type,null);
-        this.topic = topic;
-        this.topicData = topicData;
-    }
 
     public HeartbeatEvent(HeartbeatEnum type, ChannelHandlerContext channelHandlerContext, Heartbeat heartbeat)
     {
@@ -54,13 +45,5 @@ public class HeartbeatEvent implements Event<HeartbeatEnum> {
 
     public ChannelHandlerContext getChannelHandlerContext() {
         return channelHandlerContext;
-    }
-
-    public String getTopic() {
-        return topic;
-    }
-
-    public Object getTopicData() {
-        return topicData;
     }
 }

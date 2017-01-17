@@ -150,7 +150,7 @@ public final class Skeleton extends AbstractSkeleton {
         } else if (method == null) {
             out.writeFault(
                     "NoSuchMethodException",
-                    escapeMessage("The service has no method named: "
+                    escapeMessage("The skeleton has no method named: "
                             + in.getMethod()), null);
             out.close();
             return;

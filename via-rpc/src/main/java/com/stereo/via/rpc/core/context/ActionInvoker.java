@@ -89,7 +89,7 @@ public final class ActionInvoker implements IActionInvoker {
 			String interfaceName = call.getInterfaceName();
 			call.setException(new ServiceNotFoundException(interfaceName));
 			call.setStatus(IActionCall.STATUS_SERVICE_NOT_FOUND);
-			log.warn("service not found: {}", interfaceName);
+			log.warn("skeleton not found: {}", interfaceName);
 			return false;
 		} else {
 			String methodName = call.getMethodName();

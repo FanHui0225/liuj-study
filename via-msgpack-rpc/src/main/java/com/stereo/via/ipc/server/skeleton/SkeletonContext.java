@@ -1,15 +1,15 @@
-package com.stereo.via.ipc.server.service;
+package com.stereo.via.ipc.server.skeleton;
 
 import com.stereo.via.event.AsyncDispatcher;
 import com.stereo.via.event.Dispatcher;
-import com.stereo.via.event.EventHandler;
 import com.stereo.via.ipc.Config;
 import com.stereo.via.ipc.server.api.*;
+import com.stereo.via.ipc.server.event.enums.HeartbeatEnum;
 import com.stereo.via.ipc.server.event.enums.ServiceEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.stereo.via.service.AbstractService;
-
+import com.stereo.via.service.Service;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -22,53 +22,66 @@ import java.util.concurrent.ConcurrentHashMap;
  * 
  * @author stereo
  */
-public class ServiceContext extends AbstractService implements IServiceContext,
+public class SkeletonContext extends AbstractService implements ISkeletonContext,
 		Iterable<IService> {
+	public static Logger logger = LoggerFactory.getLogger(SkeletonContext.class);
+
 	private Config config;
 	private Dispatcher dispatcher;
+	private Liveliness liveliness;
 	private IServiceHandler serviceHandler;
 	protected Map<String, IService> serviceMap;
 	protected Map<String, List<IObserver>> observerMap;
-	public static Logger logger = LoggerFactory.getLogger(ServiceContext.class);
 	private static ThreadLocal<WeakReference<Object>> threadLocal = new ThreadLocal<WeakReference<Object>>();
 
-	public ServiceContext(Config config) {
-		super("ServiceContext");
+	public SkeletonContext(Config config)
+	{
+		super("SkeletonContext");
 		this.config = config;
 	}
 
 	@Override
-	protected void serviceInit() throws Exception {
+	protected void serviceInit() throws Exception
+	{
 		serviceMap = new ConcurrentHashMap<String, IService>();
 		observerMap = new ConcurrentHashMap<String, List<IObserver>>();
 
 		//事件处理器
 		dispatcher = new AsyncDispatcher();
-		((com.stereo.via.service.Service)dispatcher).init();
+		((Service)dispatcher).init();
 
 		//业务处理器
-		serviceHandler = new ServiceHandler(this,config);
-		((com.stereo.via.service.Service)serviceHandler).init();
+		serviceHandler = new ServiceHandler(this, config);
+		((Service)serviceHandler).init();
+
+		//心跳检测
+		liveliness = new Liveliness(config.getHeartBeatExpireInterval(),config.getLiveExpired());
+		((Service)liveliness).init();
 
 		//注册业务处理器
-		dispatcher.register(ServiceEnum.class, (EventHandler) serviceHandler);
+		dispatcher.register(ServiceEnum.class, serviceHandler);
+		dispatcher.register(HeartbeatEnum.class, liveliness);
 	}
 
 	@Override
 	protected void serviceStart() throws Exception {
 		if (dispatcher!=null)
-			((com.stereo.via.service.Service)dispatcher).start();
-		if (serviceHandler!=null) {
-			((com.stereo.via.service.Service)serviceHandler).start();
-		}
+			((Service)dispatcher).start();
+		if (serviceHandler!=null)
+			((Service)serviceHandler).start();
+		if (liveliness!=null)
+			((Service)liveliness).start();
 	}
 
 	@Override
 	protected void serviceStop() throws Exception {
 		if (dispatcher!=null)
-			((com.stereo.via.service.Service)dispatcher).stop();
+			((Service)dispatcher).stop();
 		if (serviceHandler!=null)
-			((com.stereo.via.service.Service)serviceHandler).stop();
+			((Service)serviceHandler).stop();
+		if (liveliness!=null)
+			((Service)liveliness).stop();
+
 	}
 
 	public static Object getObjectLocal() {
@@ -186,5 +199,10 @@ public class ServiceContext extends AbstractService implements IServiceContext,
 	@Override
 	public Dispatcher getDispatcher() {
 		return dispatcher;
+	}
+
+	@Override
+	public Liveliness getLiveliness() {
+		return liveliness;
 	}
 }

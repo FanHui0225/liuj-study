@@ -1,4 +1,4 @@
-package com.stereo.via.ipc.server.service;
+package com.stereo.via.ipc.server.skeleton;
 
 import com.stereo.via.ipc.Constants;
 import com.stereo.via.ipc.Packet;
