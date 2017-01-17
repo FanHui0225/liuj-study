@@ -34,11 +34,7 @@ public class ClientHandler extends ChannelInboundHandlerAdapter {
                 case Constants.TYPE_REQUEST:
                     break;
                 case Constants.TYPE_RESPONSE:
-                    Callback callback = clientProxy.removeCallBack(packet.getId());
-                    if (callback!=null)
-                        callback.call(packet);
-                    else
-                        LOG.debug("ClientHandler.channelRead discard packet:" + packet);
+                    notify(packet);
                     break;
                 case Constants.TYPE_HEARTBEAT:
                     break;
@@ -58,5 +54,14 @@ public class ClientHandler extends ChannelInboundHandlerAdapter {
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
         LOG.error("ClientHandler.exceptionCaught",cause);
         ctx.close();
+    }
+
+    void notify(Packet packet)
+    {
+        Callback callback = clientProxy.removeCallBack(packet.getId());
+        if (callback!=null)
+            callback.call(packet);
+        else
+            LOG.debug("ClientHandler.channelRead discard packet:" + packet);
     }
 }
