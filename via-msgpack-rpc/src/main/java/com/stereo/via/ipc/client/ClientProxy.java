@@ -58,7 +58,8 @@ public class ClientProxy extends AbstractService {
     }
 
     @Override
-    protected void serviceInit() throws Exception {
+    protected void serviceInit() throws Exception
+    {
         final SslContext sslCtx;
         if (config.isSsl()) {
             sslCtx = SslContextBuilder.forClient()
@@ -79,15 +80,18 @@ public class ClientProxy extends AbstractService {
             clazz = NioSocketChannel.class;
         }
 
-        bootstrap = new Bootstrap();
-        bootstrap.option(ChannelOption.SO_KEEPALIVE, true);
-        bootstrap.option(ChannelOption.WRITE_BUFFER_HIGH_WATER_MARK, 32 * 1024);
-        bootstrap.option(ChannelOption.WRITE_BUFFER_LOW_WATER_MARK, 8 * 1024);
-        bootstrap.option(ChannelOption.SO_LINGER ,config.getSoLinger());
-        bootstrap.option(ChannelOption.RCVBUF_ALLOCATOR, AdaptiveRecvByteBufAllocator.DEFAULT);
-        bootstrap.group(group)
+        bootstrap = new Bootstrap().group(group)
                 .channel(clazz)
-                .handler(new ChannelInitializer<SocketChannel>() {
+                .option(ChannelOption.SO_KEEPALIVE, false)
+                .option(ChannelOption.TCP_NODELAY, config.isTcpNoDelay())
+                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, config.getConnectTimeout())
+                .option(ChannelOption.WRITE_BUFFER_HIGH_WATER_MARK, 32 * 1024)
+                .option(ChannelOption.WRITE_BUFFER_LOW_WATER_MARK, 8 * 1024)
+                .option(ChannelOption.SO_LINGER ,config.getSoLinger())
+                .option(ChannelOption.SO_SNDBUF, config.getSendBufferSize())
+                .option(ChannelOption.SO_RCVBUF, config.getReceiveBufferSize())
+                .handler(new ChannelInitializer<SocketChannel>()
+                {
                     @Override
                     public void initChannel(SocketChannel ch) throws Exception {
                         ChannelPipeline p = ch.pipeline();

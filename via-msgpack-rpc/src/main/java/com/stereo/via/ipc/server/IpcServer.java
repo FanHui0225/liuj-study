@@ -74,12 +74,18 @@ public class IpcServer extends AbstractService {
             workerGroup = new NioEventLoopGroup(config.getChildNioEventThreads());
             clazz = NioServerSocketChannel.class;
         }
-        bootstrap = new ServerBootstrap();
-        bootstrap.option(ChannelOption.SO_KEEPALIVE, true);
-        bootstrap.option(ChannelOption.SO_LINGER ,config.getSoLinger());
-        bootstrap.option(ChannelOption.RCVBUF_ALLOCATOR, AdaptiveRecvByteBufAllocator.DEFAULT);
-        bootstrap.group(bossGroup, workerGroup)
+        bootstrap = new ServerBootstrap()
+                .group(bossGroup, workerGroup)
                 .channel(clazz)
+                .option(ChannelOption.SO_BACKLOG, 1024)
+                .option(ChannelOption.SO_REUSEADDR, true)
+                .option(ChannelOption.SO_KEEPALIVE, false)
+                .option(ChannelOption.TCP_NODELAY, config.isTcpNoDelay())
+                .option(ChannelOption.SO_LINGER ,config.getSoLinger())
+                .option(ChannelOption.RCVBUF_ALLOCATOR, AdaptiveRecvByteBufAllocator.DEFAULT)
+                .option(ChannelOption.SO_SNDBUF, config.getSendBufferSize())
+                .option(ChannelOption.SO_RCVBUF, config.getReceiveBufferSize())
+                .localAddress(config.getRemoteAddress())
                 .handler(new LoggingHandler(LogLevel.INFO))
                 .childHandler(new ChannelInitializer<SocketChannel>()
                 {

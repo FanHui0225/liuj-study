@@ -15,8 +15,8 @@ public final class Config {
 	private boolean ssl = false;
 	private boolean tcpNoDelay = true;
 	private boolean reuseAddress = true;
-	private int sendBufferSize = 2 * 1024;
-	private int receiveBufferSize = 8 * 1024;
+	private int sendBufferSize = 65535;
+	private int receiveBufferSize = 65535;
 	private boolean useEpoll = false;
 	private int childNioEventThreads = 6; //cpu+1
 	private int payload = 8 * 1024 * 1024;

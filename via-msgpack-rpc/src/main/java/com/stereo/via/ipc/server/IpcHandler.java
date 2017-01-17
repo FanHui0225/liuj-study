@@ -28,23 +28,30 @@ public class IpcHandler extends ChannelInboundHandlerAdapter implements IpcEngin
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
         try
         {
-            if(msg instanceof Packet)
+            if(msg != null  && msg instanceof Packet)
             {
                 final Packet packet = (Packet) msg;
-                if (packet.getType() == Constants.TYPE_REQUEST)
-                    dispatcher.getEventHandler().handle(new RequestEvent(packet,ctx));
-                else if (packet.getType() == Constants.TYPE_RESPONSE)
-                    dispatcher.getEventHandler().handle(new ResponseEvent(packet,ctx));
-                else
-                    LOG.error("IpcHandler.channelRead error msg is " + msg);
-            }else if (msg instanceof Heartbeat)
-            {
-                Heartbeat heartbeat = (Heartbeat) msg;
-            }
-            else
+                byte type = packet.getType();
+                switch (type)
+                {
+                    case Constants.TYPE_REQUEST:
+                        dispatcher.getEventHandler().handle(new RequestEvent(packet,ctx));
+                        break;
+                    case Constants.TYPE_RESPONSE:
+                        dispatcher.getEventHandler().handle(new ResponseEvent(packet,ctx));
+                        break;
+                    case Constants.TYPE_HEARTBEAT_REQUEST:
+                        break;
+                    case Constants.TYPE_HEARTBEAT_RESPONSE:
+                        break;
+                    case Constants.TYPE_HEARTBEAT_REQUEST_UNREGISTER:
+                        break;
+                    default:
+                        LOG.error("IpcHandler.channelRead error msg is " + msg);
+                }
+            } else
                 LOG.error("IpcHandler.channelRead error msg is " + msg);
-        }
-        catch (Exception e)
+        } catch (Exception e)
         {
             LOG.error("IpcHandler.handle packet is " + msg + " error",e);
         }

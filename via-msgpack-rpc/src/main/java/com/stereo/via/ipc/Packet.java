@@ -8,10 +8,10 @@ import java.util.Arrays;
  * 信息包
  * 
  * @author stereo
- * @version 2014.5.21
+ * @version 2017.1.17
  */
-public class Packet implements BeanMessage {
-
+public final class Packet implements BeanMessage
+{
 	private static final long serialVersionUID = -3447224470014044569L;
 
 	private String id;
@@ -30,24 +30,29 @@ public class Packet implements BeanMessage {
 
 	private Class<?> returnType;
 
+	private Heartbeat heartbeat;
+
 	private String exception;
 
-	public Packet() {
+	public Packet()
+	{
 	}
 
-	public Packet(Object result) {
+	public Packet(Object result)
+	{
 		this.result = result;
 	}
 
-	public Packet(String interfaceName, String method, Object[] params) {
+	public Packet(String interfaceName, String method, Object[] params)
+	{
 		super();
 		this.interfaceName = interfaceName;
 		this.method = method;
 		this.params = params;
 	}
 
-	public Packet(String id, byte type, byte state, String interfaceName,
-				  String method, Object[] params) {
+	public Packet(String id, byte type, byte state, String interfaceName, String method, Object[] params)
+	{
 		super();
 		this.id = id;
 		this.type = type;
@@ -57,7 +62,8 @@ public class Packet implements BeanMessage {
 		this.params = params;
 	}
 
-	public Packet(String id, byte type, byte state, String interfaceName, String method, Object[] params, Class<?> returnType) {
+	public Packet(String id, byte type, byte state, String interfaceName, String method, Object[] params, Class<?> returnType)
+	{
 		super();
 		this.id = id;
 		this.type = type;
@@ -66,6 +72,14 @@ public class Packet implements BeanMessage {
 		this.method = method;
 		this.params = params;
 		this.returnType = returnType;
+	}
+
+	public Packet(String id, byte type, byte state, Heartbeat heartbeat)
+	{
+		this.id = id;
+		this.type = type;
+		this.state = state;
+		this.heartbeat = heartbeat;
 	}
 
 	public String getId() {
@@ -140,12 +154,27 @@ public class Packet implements BeanMessage {
 		this.returnType = returnType;
 	}
 
+	public Heartbeat getHeartbeat() {
+		return heartbeat;
+	}
+
+	public void setHeartbeat(Heartbeat heartbeat) {
+		this.heartbeat = heartbeat;
+	}
+
 	@Override
 	public String toString() {
-		return "Packet [id=" + id + ", type=" + type + ", state=" + state
-				+ ", interfaceName=" + interfaceName + ", method=" + method
-				+ ", params=" + Arrays.toString(params) + ", result=" + result
-				+ ", returnType=" + returnType + ", exception=" + exception
-				+ "]";
+		return "Packet{" +
+				"id='" + id + '\'' +
+				", type=" + type +
+				", state=" + state +
+				", interfaceName='" + interfaceName + '\'' +
+				", method='" + method + '\'' +
+				", params=" + Arrays.toString(params) +
+				", result=" + result +
+				", returnType=" + returnType +
+				", heartbeat=" + heartbeat +
+				", exception='" + exception + '\'' +
+				'}';
 	}
 }
