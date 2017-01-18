@@ -10,6 +10,7 @@ public final class Config {
 	private int sendTimeout = 5 * 1000;
 	private int readTimeout = 15 * 1000;
 	private int idleTimeout = 30 * 1000;
+	private int heartBeatQuantity = 5;
 	private int heartBeatRate = 5 * 1000;// 5s
 	private int heartBeatExpireInterval = 60 * 1000; // 60s
 	private boolean ssl = false;
@@ -220,6 +221,14 @@ public final class Config {
 		this.liveExpired = liveExpired;
 	}
 
+	public int getHeartBeatQuantity() {
+		return heartBeatQuantity;
+	}
+
+	public void setHeartBeatQuantity(int heartBeatQuantity) {
+		this.heartBeatQuantity = heartBeatQuantity;
+	}
+
 	@Override
 	public String toString() {
 		return "Config{" +
@@ -228,6 +237,7 @@ public final class Config {
 				", sendTimeout=" + sendTimeout +
 				", readTimeout=" + readTimeout +
 				", idleTimeout=" + idleTimeout +
+				", heartBeatQuantity=" + heartBeatQuantity +
 				", heartBeatRate=" + heartBeatRate +
 				", heartBeatExpireInterval=" + heartBeatExpireInterval +
 				", ssl=" + ssl +
@@ -243,6 +253,7 @@ public final class Config {
 				", businessPoolType='" + businessPoolType + '\'' +
 				", businessPoolQueueType='" + businessPoolQueueType + '\'' +
 				", businessPoolQueueSize=" + businessPoolQueueSize +
+				", liveExpired=" + liveExpired +
 				'}';
 	}
 }

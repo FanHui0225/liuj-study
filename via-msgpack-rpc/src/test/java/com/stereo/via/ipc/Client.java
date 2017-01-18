@@ -24,9 +24,9 @@ public class Client {
         exc(clientProxy);
         //关闭客户端连接
         clientProxy.close();
-        clientProxy.init();
-        clientProxy.start();
-        exc(clientProxy);
+        //clientProxy.init();
+        //clientProxy.start();
+        //exc(clientProxy);
     }
 
     static void exc(final ClientProxy clientProxy)
@@ -75,8 +75,8 @@ public class Client {
                                 Bean2 rs = testAction.test6(new Bean());
                                 System.out.println("test6 结果=" + rs);
                             }
-                            //Thread.sleep(5000);
-                            break;
+                            Thread.sleep(5000);
+                            //break;
                         }
                     }catch (Exception ex){
                         ex.printStackTrace();

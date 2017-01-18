@@ -60,7 +60,10 @@ public class Liveliness extends AbstractLivelinessMonitor<Heartbeat> implements 
                 unregister(heartbeat);
                 break;
             case HEARTBEAT:
-                receivedPing(heartbeat);
+                if (running.containsKey(heartbeat))
+                    receivedPing(heartbeat);
+                else
+                    register(heartbeat);
                 break;
             case TOPIC_PUSH:
                 break;
