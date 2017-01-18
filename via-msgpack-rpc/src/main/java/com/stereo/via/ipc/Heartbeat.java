@@ -10,7 +10,6 @@ import java.util.Map;
  */
 public class Heartbeat implements BeanMessage {
     private String client_id;
-    private byte type;
     private long client_time;
     private long server_time;
     private List<String> topics;
@@ -18,10 +17,6 @@ public class Heartbeat implements BeanMessage {
 
     public String getClient_id() {
         return client_id;
-    }
-
-    public byte getType() {
-        return type;
     }
 
     public long getClient_time() {
@@ -34,10 +29,6 @@ public class Heartbeat implements BeanMessage {
 
     public void setClient_id(String client_id) {
         this.client_id = client_id;
-    }
-
-    public void setType(byte type) {
-        this.type = type;
     }
 
     public void setClient_time(long client_time) {
@@ -81,7 +72,6 @@ public class Heartbeat implements BeanMessage {
     public String toString() {
         return "Heartbeat{" +
                 "client_id='" + client_id + '\'' +
-                ", type=" + type +
                 ", client_time=" + client_time +
                 ", server_time=" + server_time +
                 ", topics=" + topics +

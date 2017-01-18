@@ -1,10 +1,12 @@
 package com.stereo.via.ipc.client;
 
 import com.stereo.via.ipc.Config;
+import com.stereo.via.ipc.Packet;
 import com.stereo.via.ipc.codec.MsgPackDecoder;
 import com.stereo.via.ipc.codec.MsgPackEncoder;
 import com.stereo.via.ipc.exc.ClientConnectException;
 import com.stereo.via.ipc.exc.ClientTimeoutException;
+import com.stereo.via.ipc.exc.IpcRuntimeException;
 import com.stereo.via.ipc.util.NetUtils;
 import com.stereo.via.service.AbstractService;
 import io.netty.bootstrap.Bootstrap;
@@ -28,9 +30,12 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 /**
+ *
+ * IPC客户端代理
  * Created by stereo on 16-8-4.
  */
 public class ClientProxy extends AbstractService {
@@ -49,6 +54,8 @@ public class ClientProxy extends AbstractService {
 
     private final ClassLoader loader;
 
+    private HeartbeatReport heartbeatReport;
+
     public ClientProxy(Config config){
         this(config, Thread.currentThread().getContextClassLoader());
     }
@@ -66,6 +73,10 @@ public class ClientProxy extends AbstractService {
     @Override
     protected void serviceInit() throws Exception
     {
+        //心跳初始化
+        heartbeatReport = new HeartbeatReport(this);
+        heartbeatReport.init();
+
         final SslContext sslCtx;
         if (config.isSsl()) {
             sslCtx = SslContextBuilder.forClient()
@@ -128,6 +139,7 @@ public class ClientProxy extends AbstractService {
                     throw new ClientConnectException("Failed to connect " + config.getHost() + ":" + config.getPort()
                             + ". Cause by: Remote and local address are the same");
                 }
+                heartbeatReport.start();
             }else {
                 throw new ClientTimeoutException(channelFuture.cause());
             }
@@ -135,11 +147,14 @@ public class ClientProxy extends AbstractService {
     }
 
     @Override
-    protected void serviceStop() throws Exception {
+    protected void serviceStop() throws Exception
+    {
         if(channel!=null && group != null)
         {
+            heartbeatReport.stop();
             channel.close().sync();
             group.shutdownGracefully();
+            releaseCallBack();
             bootstrap = null;
             group = null;
             channel = null;
@@ -174,6 +189,38 @@ public class ClientProxy extends AbstractService {
         if (ret != null)
             callbackMap.remove(messageId);
         return ret;
+    }
+
+    protected <T extends Packet> AsyncFuture<T>  sendPacket(T packet) throws InterruptedException
+    {
+        AsyncFuture<T> future = buildFuture(packet);
+        if (getChannel().writeAndFlush(packet).sync().isSuccess())
+            return future;
+        else
+            throw new IpcRuntimeException("ClientProxy >>> send error " + "packet : "+ packet);
+    }
+
+    protected <T extends Packet> AsyncFuture<T> buildFuture(final T packet)
+    {
+        if (packet !=null && removeCallBack(packet.getId()) == null)
+        {
+            final AsyncFuture<T> future = new AsyncFuture<T>();
+            Callback<T> callback = new Callback<T>() {
+
+                @Override
+                public Class<?> getAcceptValueType() {
+                    return packet.getClass();
+                }
+
+                @Override
+                public void call(T value){
+                    future.done(value);
+                }
+            };
+            setCallback(packet.getId(), callback);
+            return future;
+        }else
+            throw new IpcRuntimeException("ClientProxy >>> packet error : " + packet);
     }
 
     public Channel getChannel() {

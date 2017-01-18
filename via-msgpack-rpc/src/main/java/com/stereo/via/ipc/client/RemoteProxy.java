@@ -68,50 +68,27 @@ public class RemoteProxy implements InvocationHandler {
                         _mangleMap.put(method, mangleName);
                     }
                 }
-                int sequence = -1;
                 //build packet
-                final Packet packet = packet(_type.getName(), method.getName(), method.getReturnType(), args);
+                final Packet packet = Packet.packetRequest(_type.getName(), method.getName(), method.getReturnType(), args);
                 //LOG.debug("RemoteProxy invoke packet is " + packet);
-                if (packet !=null && clientProxy.removeCallBack(packet.getId()) == null)
+                try
                 {
-                    final AsyncFuture<Object> future = new AsyncFuture<Object>();
-                    Callback<Object> callback = new Callback<Object>() {
-
-                        @Override
-                        public Class<?> getAcceptValueType() {
-                            return packet.getClass();
-                        }
-
-                        @Override
-                        public void call(Object value){
-                            future.done(value);
-                        }
-                    };
-                    clientProxy.setCallback(packet.getId(), callback);
+                    //发送请求
+                    AsyncFuture<Packet> future = clientProxy.sendPacket(packet);
                     try
                     {
-                        //发送请求
-                        if(sendRequest(packet).isSuccess())
-                        {
-                            try
-                            {
-                                Object resultPacket = future.get(getClientProxy().getConfig().getReadTimeout(), TimeUnit.MILLISECONDS);
-                                //响应结果
-                                return receiveResponse((Packet) resultPacket);
-                            }catch (InterruptedException ex)
-                            {
-                                throw new IpcRuntimeException("ClientProxy >>> read timeout " + "packet : "+ packet);
-                            }
-                        }
-                        else
-                            throw new IpcRuntimeException("ClientProxy >>> send error " + "packet : "+ packet);
-                    }catch (Exception ex){
-                        //请求失败后移除回调
-                        clientProxy.removeCallBack(packet.getId());
-                        throw ex;
+                        Object resultPacket = future.get(getClientProxy().getConfig().getReadTimeout(), TimeUnit.MILLISECONDS);
+                        //响应结果
+                        return receiveResponse((Packet) resultPacket);
+                    }catch (InterruptedException ex)
+                    {
+                        throw new IpcRuntimeException("ClientProxy >>> read timeout " + "packet : "+ packet);
                     }
-                }else
-                    throw new IpcRuntimeException("ClientProxy >>> packet error : " + packet);
+                }catch (Exception ex){
+                    //请求失败后移除回调
+                    clientProxy.removeCallBack(packet.getId());
+                    throw ex;
+                }
             }else
                 throw new IpcRuntimeException("ClientProxy >>> state is not started");
         }
@@ -120,13 +97,6 @@ public class RemoteProxy implements InvocationHandler {
             LOG.error("ClientProxy exc", ex);
             throw new IpcRuntimeException(ex);
         }
-    }
-
-    private Packet packet(String serviceName, String method,
-                          Class<?> returnType, Object[] params) {
-        UUID uuid = new UUID();
-        uuid.setS_id(serviceName + "-" + method);
-        return new Packet(uuid.toString(), Constants.TYPE_REQUEST, Constants.STATUS_PENDING,serviceName,method,params,returnType);
     }
 
     private ChannelFuture sendRequest(Packet request) throws InterruptedException
