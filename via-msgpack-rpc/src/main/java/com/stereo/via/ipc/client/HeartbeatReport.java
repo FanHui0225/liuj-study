@@ -4,7 +4,6 @@ import com.stereo.via.ipc.Constants;
 import com.stereo.via.ipc.Heartbeat;
 import com.stereo.via.ipc.Packet;
 import com.stereo.via.ipc.exc.IpcRuntimeException;
-import com.stereo.via.ipc.server.api.IFunction;
 import com.stereo.via.ipc.util.Daemon;
 import com.stereo.via.service.AbstractService;
 import org.slf4j.Logger;
@@ -20,7 +19,7 @@ public class HeartbeatReport extends AbstractService implements Runnable
     {
         BORN,
         HEALTHY,
-        RECVERY,
+        RECOVERY,
         CEASE
     }
     private static Logger LOG = LoggerFactory.getLogger(HeartbeatReport.class);
@@ -98,7 +97,7 @@ public class HeartbeatReport extends AbstractService implements Runnable
 
     void reportHeartBeat(byte type)
     {
-        if (state == HeartBeatState.RECVERY)
+        if (state == HeartBeatState.RECOVERY)
         {
             LOG.info(getName() + " recovering");
             return;
@@ -116,7 +115,7 @@ public class HeartbeatReport extends AbstractService implements Runnable
             wrapFailed++;
             if (wrapFailed > heartbeatQuantity)
             {
-                state = HeartBeatState.RECVERY;
+                state = HeartBeatState.RECOVERY;
                 //恢复机制
                 throw new IpcRuntimeException(getName() + " reportHeartBeat fail",ex);
             }
