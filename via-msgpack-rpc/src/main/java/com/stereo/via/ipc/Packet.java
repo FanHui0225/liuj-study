@@ -180,16 +180,15 @@ public final class Packet implements BeanMessage
 	}
 
 	public static Packet packetRequest(String serviceName, String method,
-						  Class<?> returnType, Object[] params) {
-		UUID uuid = new UUID();
-		uuid.setS_id(serviceName + "-" + method);
+						  Class<?> returnType, Object[] params)
+	{
+		UUID uuid = new UUID(serviceName + "-" + method);
 		return new Packet(uuid.toString(), Constants.TYPE_REQUEST, Constants.STATUS_PENDING,serviceName,method,params,returnType);
 	}
 
 	public static Packet packetHeartBeat(Heartbeat heartbeat,byte type)
 	{
-		UUID uuid = new UUID();
-		uuid.setS_id(heartbeat.getClient_id());
+		UUID uuid = new UUID(heartbeat.getClient_id());
 		return new Packet(uuid.toString(),type,Constants.STATUS_PENDING,heartbeat);
 	}
 }

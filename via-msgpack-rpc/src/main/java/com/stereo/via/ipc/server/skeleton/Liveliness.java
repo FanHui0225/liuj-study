@@ -5,6 +5,7 @@ import com.stereo.via.ipc.Heartbeat;
 import com.stereo.via.ipc.server.event.HeartbeatEvent;
 import com.stereo.via.ipc.server.event.enums.HeartbeatEnum;
 import com.stereo.via.ipc.util.AbstractLivelinessMonitor;
+import com.stereo.via.ipc.util.Time;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,7 +47,8 @@ public class Liveliness extends AbstractLivelinessMonitor<Heartbeat> implements 
     }
 
     @Override
-    public void handle(HeartbeatEvent event) {
+    public void handle(HeartbeatEvent event)
+    {
         HeartbeatEnum type = event.getType();
         Heartbeat heartbeat = event.getHeartbeat();
         switch (type)
@@ -63,6 +65,11 @@ public class Liveliness extends AbstractLivelinessMonitor<Heartbeat> implements 
             case TOPIC_PUSH:
                 break;
         }
+        heartbeat.setServer_time(Time.now());
+        try {
+            event.getChannelHandlerContext().channel().writeAndFlush(event.getPacket()).sync();
+        } catch (InterruptedException e) {
+            LOG.error(getName() + " reply heartbeat faile");
+        }
     }
-
 }

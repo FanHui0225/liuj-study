@@ -191,13 +191,21 @@ public class ClientProxy extends AbstractService {
         return ret;
     }
 
-    protected <T extends Packet> AsyncFuture<T>  sendPacket(T packet) throws InterruptedException
+    protected <T extends Packet> AsyncFuture<T>  sendPacket(T packet)
     {
         AsyncFuture<T> future = buildFuture(packet);
-        if (getChannel().writeAndFlush(packet).sync().isSuccess())
-            return future;
-        else
-            throw new IpcRuntimeException("ClientProxy >>> send error " + "packet : "+ packet);
+        try
+        {
+            if (getChannel().writeAndFlush(packet).sync().isSuccess())
+                return future;
+            else
+                throw new IpcRuntimeException("ClientProxy >>> send packet error " + "packet : "+ packet);
+        }
+        catch (InterruptedException ex)
+        {
+            removeCallBack(packet.getId());
+            throw new IpcRuntimeException("ClientProxy >>> send packet interrupted error " + "packet : "+ packet);
+        }
     }
 
     protected <T extends Packet> AsyncFuture<T> buildFuture(final T packet)

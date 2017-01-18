@@ -1,5 +1,6 @@
 package com.stereo.via.ipc;
 
+import com.stereo.via.ipc.util.Time;
 import org.msgpack.BeanMessage;
 
 import java.util.List;
@@ -14,6 +15,19 @@ public class Heartbeat implements BeanMessage {
     private long server_time;
     private List<String> topics;
     private Map<String,List<Object>> data;
+
+    public Heartbeat()
+    {}
+
+    public Heartbeat(String client_id) {
+        this.client_id = client_id;
+        now();
+    }
+
+    public void now()
+    {
+        client_time = Time.now();
+    }
 
     public String getClient_id() {
         return client_id;

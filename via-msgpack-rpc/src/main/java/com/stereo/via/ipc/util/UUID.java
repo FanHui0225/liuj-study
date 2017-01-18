@@ -7,7 +7,7 @@ import java.util.Random;
 
 /**
  * UUID
- * 
+ *
  * @author stereo
  */
 public class UUID {
@@ -30,7 +30,7 @@ public class UUID {
 		myRand = new Random(secureInitializer);
 	}
 
-	public void setS_id(String s_id) {
+	public UUID(String s_id){
 		this.s_id = s_id;
 		getRandomGUID(false);
 	}
@@ -117,5 +117,10 @@ public class UUID {
 
 	public String toString() {
 		return UUID.getPrettyFormatted(valueAfterMD5.toUpperCase());
+	}
+
+	public static UUID randomUUID()
+	{
+		return new UUID(null);
 	}
 }

@@ -1,9 +1,18 @@
 package com.stereo.via.ipc.client;
 
+import com.stereo.via.ipc.Constants;
+import com.stereo.via.ipc.Heartbeat;
+import com.stereo.via.ipc.Packet;
+import com.stereo.via.ipc.exc.IpcRuntimeException;
 import com.stereo.via.ipc.util.Daemon;
+import com.stereo.via.ipc.util.Time;
 import com.stereo.via.service.AbstractService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 /**
  * Created by stereo on 17-1-18.
@@ -15,11 +24,13 @@ public class HeartbeatReport extends AbstractService implements Runnable
     private ClientProxy clientProxy;
     private final int heartBeatRate;
     private volatile boolean running;
+    Heartbeat heartbeat;
 
-    public HeartbeatReport(ClientProxy clientProxy) {
+    public HeartbeatReport(ClientProxy proxy) {
         super("HeartbeatReport");
-        this.clientProxy = clientProxy;
+        clientProxy = proxy;
         heartBeatRate = clientProxy.getConfig().getHeartBeatRate();
+        heartbeat = new Heartbeat(proxy.getClientId());
     }
 
     @Override
@@ -41,6 +52,7 @@ public class HeartbeatReport extends AbstractService implements Runnable
     @Override
     protected void serviceInit() throws Exception
     {
+        LOG.info(getName() + " no init");
     }
 
     @Override
@@ -63,15 +75,32 @@ public class HeartbeatReport extends AbstractService implements Runnable
     void register()
     {
         LOG.info(getName() + " register");
+        heartbeat.now();
+        reportHeartBeat(Constants.TYPE_HEARTBEAT_REQUEST_REGISTER);
     }
 
     void unregister()
     {
         LOG.info(getName() + " unregister");
+        heartbeat.now();
+        reportHeartBeat(Constants.TYPE_HEARTBEAT_REQUEST_UNREGISTER);
     }
 
     void heatbeat()
     {
         LOG.info(getName() + " heatbeat");
+        heartbeat.now();
+        reportHeartBeat(Constants.TYPE_HEARTBEAT);
+    }
+
+    void reportHeartBeat(byte type)
+    {
+        AsyncFuture<Packet> future = clientProxy.sendPacket(Packet.packetHeartBeat(heartbeat, type));
+        try {
+            heartbeat = future.get(clientProxy.getConfig().getReadTimeout(), TimeUnit.MILLISECONDS).getHeartbeat();
+        } catch (Exception ex) {
+            LOG.error(getName() + " reportHeartBeat ", ex);
+            throw new IpcRuntimeException(getName() + " reportHeartBeat fail",ex);
+        }
     }
 }

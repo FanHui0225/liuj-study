@@ -43,13 +43,13 @@ public class IpcHandler extends ChannelInboundHandlerAdapter implements IpcEngin
                         dispatcher.getEventHandler().handle(new ResponseEvent(packet,ctx));
                         break;
                     case Constants.TYPE_HEARTBEAT_REQUEST_REGISTER:
-                        dispatcher.getEventHandler().handle(new HeartbeatEvent(HeartbeatEnum.REGISTER,ctx,packet.getHeartbeat()));
+                        dispatcher.getEventHandler().handle(new HeartbeatEvent(HeartbeatEnum.REGISTER,ctx,packet));
                         break;
                     case Constants.TYPE_HEARTBEAT:
-                        dispatcher.getEventHandler().handle(new HeartbeatEvent(HeartbeatEnum.HEARTBEAT,ctx,packet.getHeartbeat()));
+                        dispatcher.getEventHandler().handle(new HeartbeatEvent(HeartbeatEnum.HEARTBEAT,ctx,packet));
                         break;
                     case Constants.TYPE_HEARTBEAT_REQUEST_UNREGISTER:
-                        dispatcher.getEventHandler().handle(new HeartbeatEvent(HeartbeatEnum.UNREGISTER,ctx,packet.getHeartbeat()));
+                        dispatcher.getEventHandler().handle(new HeartbeatEvent(HeartbeatEnum.UNREGISTER,ctx,packet));
                         break;
                     default:
                         LOG.error("IpcHandler.channelRead error msg is " + msg);

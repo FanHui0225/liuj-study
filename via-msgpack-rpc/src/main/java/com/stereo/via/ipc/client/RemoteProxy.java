@@ -3,13 +3,11 @@ package com.stereo.via.ipc.client;
 import com.stereo.via.ipc.Constants;
 import com.stereo.via.ipc.Packet;
 import com.stereo.via.ipc.exc.IpcRuntimeException;
-import com.stereo.via.ipc.util.UUID;
 import com.stereo.via.service.Service;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -71,23 +69,16 @@ public class RemoteProxy implements InvocationHandler {
                 //build packet
                 final Packet packet = Packet.packetRequest(_type.getName(), method.getName(), method.getReturnType(), args);
                 //LOG.debug("RemoteProxy invoke packet is " + packet);
+                //发送请求
+                AsyncFuture<Packet> future = clientProxy.sendPacket(packet);
                 try
                 {
-                    //发送请求
-                    AsyncFuture<Packet> future = clientProxy.sendPacket(packet);
-                    try
-                    {
-                        Object resultPacket = future.get(getClientProxy().getConfig().getReadTimeout(), TimeUnit.MILLISECONDS);
-                        //响应结果
-                        return receiveResponse((Packet) resultPacket);
-                    }catch (InterruptedException ex)
-                    {
-                        throw new IpcRuntimeException("ClientProxy >>> read timeout " + "packet : "+ packet);
-                    }
-                }catch (Exception ex){
-                    //请求失败后移除回调
-                    clientProxy.removeCallBack(packet.getId());
-                    throw ex;
+                    Object resultPacket = future.get(getClientProxy().getConfig().getReadTimeout(), TimeUnit.MILLISECONDS);
+                    //响应结果
+                    return receiveResponse((Packet) resultPacket);
+                }catch (InterruptedException ex)
+                {
+                    throw new IpcRuntimeException("ClientProxy >>> read packet timeout " + "packet : "+ packet);
                 }
             }else
                 throw new IpcRuntimeException("ClientProxy >>> state is not started");

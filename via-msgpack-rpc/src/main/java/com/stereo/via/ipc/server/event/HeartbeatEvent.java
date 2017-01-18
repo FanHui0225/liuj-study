@@ -2,6 +2,7 @@ package com.stereo.via.ipc.server.event;
 
 import com.stereo.via.event.Event;
 import com.stereo.via.ipc.Heartbeat;
+import com.stereo.via.ipc.Packet;
 import com.stereo.via.ipc.server.event.enums.HeartbeatEnum;
 import com.stereo.via.ipc.util.Time;
 import io.netty.channel.ChannelHandlerContext;
@@ -12,14 +13,13 @@ import io.netty.channel.ChannelHandlerContext;
 public class HeartbeatEvent implements Event<HeartbeatEnum> {
     private long timestamp;
     private HeartbeatEnum type;
-    private Heartbeat heartbeat;
+    private Packet packet;
     private ChannelHandlerContext channelHandlerContext;
 
-    public HeartbeatEvent(HeartbeatEnum type, ChannelHandlerContext channelHandlerContext, Heartbeat heartbeat)
+    public HeartbeatEvent(HeartbeatEnum type, ChannelHandlerContext channelHandlerContext, Packet packet)
     {
         this(type,channelHandlerContext);
-        this.heartbeat = heartbeat;
-        this.heartbeat.setServer_time(timestamp);
+        this.packet = packet;
     }
 
     protected HeartbeatEvent(HeartbeatEnum type, ChannelHandlerContext channelHandlerContext)
@@ -40,7 +40,11 @@ public class HeartbeatEvent implements Event<HeartbeatEnum> {
     }
 
     public Heartbeat getHeartbeat() {
-        return heartbeat;
+        return packet.getHeartbeat();
+    }
+
+    public Packet getPacket() {
+        return packet;
     }
 
     public ChannelHandlerContext getChannelHandlerContext() {
