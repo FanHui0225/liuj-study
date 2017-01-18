@@ -21,6 +21,16 @@ public class Client {
         clientProxy.init();
         //连接远程服务
         clientProxy.start();
+        exc(clientProxy);
+        //关闭客户端连接
+        clientProxy.close();
+        clientProxy.init();
+        clientProxy.start();
+        exc(clientProxy);
+    }
+
+    static void exc(final ClientProxy clientProxy)
+    {
         //6个线程调用远程接口
         ExecutorService executor = Executors.newFixedThreadPool(6);
         for (int i = 0; i < 6; i++) {
@@ -65,8 +75,8 @@ public class Client {
                                 Bean2 rs = testAction.test6(new Bean());
                                 System.out.println("test6 结果=" + rs);
                             }
-                            Thread.sleep(5000);
-                            //break;
+                            //Thread.sleep(5000);
+                            break;
                         }
                     }catch (Exception ex){
                         ex.printStackTrace();
@@ -76,7 +86,5 @@ public class Client {
         }
         executor.shutdown();
         while (!executor.isTerminated());
-        //关闭客户端连接
-        clientProxy.close();
     }
 }
