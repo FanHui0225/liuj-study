@@ -1,4 +1,4 @@
-package com.stereo.via.ipc.server.skeleton;
+package com.stereo.via.ipc.server.skeleton.service;
 
 import com.stereo.via.ipc.Packet;
 import io.netty.channel.Channel;
@@ -7,16 +7,16 @@ import io.netty.channel.ChannelHandlerContext;
 /**
  * Created by stereo on 16-8-17.
  */
-public class RequestContext{
+public class ServiceContext {
     private Packet _request;
     private ChannelHandlerContext _channelHandlerContext;
-    private static final ThreadLocal<RequestContext> _localContext = new ThreadLocal<RequestContext>();
+    private static final ThreadLocal<ServiceContext> _localContext = new ThreadLocal<ServiceContext>();
 
     protected static void begin(Packet _request, ChannelHandlerContext channelHandlerContext){
-        RequestContext context = (RequestContext) _localContext.get();
+        ServiceContext context = (ServiceContext) _localContext.get();
         if (context == null)
         {
-            context = new RequestContext();
+            context = new ServiceContext();
             _localContext.set(context);
         }
         context._request = _request;
@@ -24,7 +24,7 @@ public class RequestContext{
     }
 
     protected static void end() {
-        RequestContext context = (RequestContext) _localContext.get();
+        ServiceContext context = (ServiceContext) _localContext.get();
         if (context != null)
         {
             context._request = null;
@@ -35,7 +35,7 @@ public class RequestContext{
 
     public static Packet getRequestPacket()
     {
-        RequestContext context = (RequestContext) _localContext.get();
+        ServiceContext context = (ServiceContext) _localContext.get();
 
         if (context != null)
             return context._request;
@@ -45,7 +45,7 @@ public class RequestContext{
 
     public static ChannelHandlerContext getChannelHandlerContext()
     {
-        RequestContext context = (RequestContext) _localContext.get();
+        ServiceContext context = (ServiceContext) _localContext.get();
 
         if (context != null)
             return context._channelHandlerContext;
@@ -54,7 +54,7 @@ public class RequestContext{
     }
 
     public static Channel getChannel() {
-        RequestContext context = (RequestContext) _localContext.get();
+        ServiceContext context = (ServiceContext) _localContext.get();
 
         if (context != null)
             return context._channelHandlerContext.channel();

@@ -6,6 +6,8 @@ import com.stereo.via.ipc.Config;
 import com.stereo.via.ipc.server.api.*;
 import com.stereo.via.ipc.server.event.enums.HeartbeatEnum;
 import com.stereo.via.ipc.server.event.enums.ServiceEnum;
+import com.stereo.via.ipc.server.skeleton.service.Observer;
+import com.stereo.via.ipc.server.skeleton.service.ServiceHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.stereo.via.service.AbstractService;

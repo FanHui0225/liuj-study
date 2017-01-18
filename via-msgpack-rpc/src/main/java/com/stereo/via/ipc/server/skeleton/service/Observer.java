@@ -1,4 +1,4 @@
-package com.stereo.via.ipc.server.skeleton;
+package com.stereo.via.ipc.server.skeleton.service;
 
 import com.stereo.via.ipc.server.api.IFunction;
 import com.stereo.via.ipc.server.api.INotification;

@@ -1,4 +1,4 @@
-package com.stereo.via.ipc.server.skeleton;
+package com.stereo.via.ipc.server.skeleton.service;
 
 import com.stereo.via.event.Event;
 import com.stereo.via.ipc.server.api.ISkeletonContext;
@@ -85,7 +85,7 @@ public class ServiceHandler extends AbstractService implements IServiceHandler{
 
     @Override
     public void handleRequest(RequestEvent request) throws Exception {
-        RequestContext.begin(request.getTarget(),request.getChannelHandlerContext());
+        ServiceContext.begin(request.getTarget(),request.getChannelHandlerContext());
         try
         {
             boolean succeed = serviceInvoker.invoke(new ServiceCall(request.getTarget()));
@@ -95,7 +95,7 @@ public class ServiceHandler extends AbstractService implements IServiceHandler{
                 LOG.error("handleRequest failed request : " + request.getTarget());
         }
         finally {
-            RequestContext.end();
+            ServiceContext.end();
         }
     }
 

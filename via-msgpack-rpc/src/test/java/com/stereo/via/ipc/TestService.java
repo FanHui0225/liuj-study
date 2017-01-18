@@ -1,8 +1,8 @@
 package com.stereo.via.ipc;
 
 import com.stereo.via.ipc.server.api.INotification;
-import com.stereo.via.ipc.server.skeleton.RequestContext;
-import com.stereo.via.ipc.server.skeleton.Service;
+import com.stereo.via.ipc.server.skeleton.service.ServiceContext;
+import com.stereo.via.ipc.server.skeleton.service.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.HashMap;
@@ -24,7 +24,7 @@ public class TestService extends Service implements ITestService {
     }
 
     public Bean test1(Bean bean){
-        LOG.info("TestService.test1 " + bean + " RequestContext.getChannelHandlerContext() " +  RequestContext.getChannelHandlerContext());
+        LOG.info("TestService.test1 " + bean + " ServiceContext.getChannelHandlerContext() " +  ServiceContext.getChannelHandlerContext());
         return bean;
     }
 
