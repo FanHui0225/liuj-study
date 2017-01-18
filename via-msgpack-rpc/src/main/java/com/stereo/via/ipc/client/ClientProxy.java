@@ -183,4 +183,8 @@ public class ClientProxy extends AbstractService {
     public Config getConfig() {
         return config;
     }
+
+    public String getClientId() {
+        return clientId;
+    }
 }

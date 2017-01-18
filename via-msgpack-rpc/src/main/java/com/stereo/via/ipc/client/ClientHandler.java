@@ -29,6 +29,8 @@ public class ClientHandler extends ChannelInboundHandlerAdapter {
         if(msg instanceof Packet)
         {
             Packet packet = (Packet) msg;
+            notify(packet);
+            /**
             switch (packet.getType())
             {
                 case Constants.TYPE_REQUEST:
@@ -44,7 +46,7 @@ public class ClientHandler extends ChannelInboundHandlerAdapter {
                     break;
                 default:
                     LOG.error("ClientHandler.channelRead msg is " + msg);
-            }
+            }*/
         }
         else
             LOG.error("ClientHandler.channelRead error msg is " + msg);

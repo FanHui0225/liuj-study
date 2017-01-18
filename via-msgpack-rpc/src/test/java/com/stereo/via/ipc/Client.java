@@ -66,7 +66,7 @@ public class Client {
                                 System.out.println("test6 结果=" + rs);
                             }
                             //Thread.sleep(50);
-                            //break;
+                            break;
                         }
                     }catch (Exception ex){
                         ex.printStackTrace();
@@ -74,7 +74,9 @@ public class Client {
                 }
             });
         }
+        executor.shutdown();
+        while (!executor.isTerminated());
         //关闭客户端连接
-         //clientProxy.close();
+        clientProxy.close();
     }
 }
