@@ -72,6 +72,9 @@ public abstract class AbstractClient extends AbstractService implements Client, 
         doClose();
     }
 
+    protected abstract void doConnect() throws IpcRuntimeException;
+    protected abstract void doDisConnect() throws IpcRuntimeException;
+
     @Override
     public void doOpen() throws IpcRuntimeException {
         //心跳初始化
@@ -257,6 +260,7 @@ public abstract class AbstractClient extends AbstractService implements Client, 
         }
         catch (Exception ex)
         {
+            LOG.error("ClientProxy >>> send packet error " + "packet : "+ packet , ex);
             removeCallBack(packet.getId());
             throw new IpcRuntimeException("ClientProxy >>> send packet error " + "packet : "+ packet);
         }

@@ -11,9 +11,5 @@ public interface Client extends Endpoint, Channel {
 
     void doClose() throws IpcRuntimeException;
 
-    void doConnect() throws IpcRuntimeException;
-
-    void doDisConnect() throws IpcRuntimeException;
-
     Channel getChannel();
 }

@@ -40,7 +40,7 @@ public final class ClientProxy extends AbstractClient {
     }
 
     @Override
-    public void doConnect() throws IpcRuntimeException
+    protected void doConnect() throws IpcRuntimeException
     {
         try
         {
@@ -65,7 +65,7 @@ public final class ClientProxy extends AbstractClient {
     }
 
     @Override
-    public void doDisConnect() throws IpcRuntimeException {
+    protected void doDisConnect() throws IpcRuntimeException {
         closeChannel();
         //group.shutdownGracefully().syncUninterruptibly();
     }
