@@ -23,7 +23,7 @@ public class Client {
         //连接远程服务
         clientProxy.start();
         //重连远程服务
-        clientProxy.reconnect();
+        //clientProxy.reconnect();
         //调用远程服务
         exc(clientProxy);
         //关闭客户端连接
@@ -63,7 +63,7 @@ public class Client {
                             else if (index == 3)
                             {
                                 testAction.test4();
-                                System.out.println("test4 结果 无返回值");
+                                System.out.println("test4 结果=无返回值");
                             }
                             else if (index == 4)
                             {
