@@ -124,7 +124,7 @@ public abstract class AbstractClient extends AbstractService implements Client, 
                         p.addLast(
                                 new MsgPackEncoder(),
                                 new MsgPackDecoder(config.getPayload()),
-                                new ClientHandler()
+                                new ClientHandler(AbstractClient.this,config)
                         );
                     }
                 });
@@ -153,7 +153,9 @@ public abstract class AbstractClient extends AbstractService implements Client, 
 
     @Override
     public void closeChannel() {
-        getChannel().closeChannel();
+        io.netty.channel.Channel c = channel;
+        Channel channel = IpcChannel.getChannel(c);
+        channel.closeChannel();
     }
 
     @Override

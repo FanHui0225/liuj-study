@@ -102,8 +102,8 @@ public class HeartbeatReport extends AbstractService implements Runnable
             LOG.info(getName() + " recovering");
             return;
         }
-        AsyncFuture<Packet> future = client.sendPacket(Packet.packetHeartBeat(heartbeat, type));
         try {
+            AsyncFuture<Packet> future = client.sendPacket(Packet.packetHeartBeat(heartbeat, type));
             heartbeat = future.get(client.getConfig().getReadTimeout(), TimeUnit.MILLISECONDS).getHeartbeat();
             wrapFailed = 0;
             wrapSucceed++;
@@ -115,9 +115,9 @@ public class HeartbeatReport extends AbstractService implements Runnable
             wrapFailed++;
             if (wrapFailed > heartbeatQuantity)
             {
+                LOG.error(getName() + " reportHeartBeat fail",ex);
                 state = HeartBeatState.RECOVERY;
-                //恢复机制
-                throw new IpcRuntimeException(getName() + " reportHeartBeat fail",ex);
+                client.reconnect();
             }
         }
     }

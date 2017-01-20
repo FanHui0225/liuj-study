@@ -14,17 +14,17 @@ import java.util.concurrent.Executors;
 public class Client {
 
     //@Test
-    public static void main(String[] params) throws Exception {
+    public static void main(String[] params) throws Exception
+    {
         //创建客户连接代理
         final ClientProxy clientProxy = new ClientProxy(new Config( "127.0.0.1" , 10092 ));
         //初始化连接
         clientProxy.init();
         //连接远程服务
         clientProxy.start();
-
+        //重连远程服务
         clientProxy.reconnect();
-
-
+        //调用远程服务
         exc(clientProxy);
         //关闭客户端连接
         clientProxy.close();
@@ -76,7 +76,7 @@ public class Client {
                                 Bean2 rs = testAction.test6(new Bean());
                                 System.out.println("test6 结果=" + rs);
                             }
-                            //Thread.sleep(5000);
+                            Thread.sleep(5000);
                             //break;
                         }
                     }catch (Exception ex){

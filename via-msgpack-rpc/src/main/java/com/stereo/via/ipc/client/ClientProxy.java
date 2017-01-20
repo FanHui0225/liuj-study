@@ -1,36 +1,14 @@
 package com.stereo.via.ipc.client;
 
 import com.stereo.via.ipc.Config;
-import com.stereo.via.ipc.Packet;
-import com.stereo.via.ipc.codec.MsgPackDecoder;
-import com.stereo.via.ipc.codec.MsgPackEncoder;
 import com.stereo.via.ipc.exc.ClientConnectException;
 import com.stereo.via.ipc.exc.ClientTimeoutException;
 import com.stereo.via.ipc.exc.IpcRuntimeException;
 import com.stereo.via.ipc.util.NetUtils;
-import com.stereo.via.service.AbstractService;
-import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
-import io.netty.channel.epoll.EpollEventLoopGroup;
-import io.netty.channel.epoll.EpollSocketChannel;
-import io.netty.channel.nio.NioEventLoopGroup;
-import io.netty.channel.socket.SocketChannel;
-import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.handler.ssl.SslContext;
-import io.netty.handler.ssl.SslContextBuilder;
-import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
 import java.net.InetSocketAddress;
-import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -38,7 +16,7 @@ import java.util.concurrent.TimeUnit;
  * IPC客户端代理
  * Created by stereo on 16-8-4.
  */
-public class ClientProxy extends AbstractClient {
+public final class ClientProxy extends AbstractClient {
 
     private final ClassLoader loader;
 
