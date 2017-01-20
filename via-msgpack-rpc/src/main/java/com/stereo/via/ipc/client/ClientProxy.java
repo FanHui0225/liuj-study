@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
  * IPC客户端代理
  * Created by stereo on 16-8-4.
  */
-public final class ClientProxy extends AbstractClient {
+public class ClientProxy extends AbstractClient {
 
     private final ClassLoader loader;
 
