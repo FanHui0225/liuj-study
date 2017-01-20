@@ -4,6 +4,7 @@ import com.stereo.via.ipc.Config;
 import com.stereo.via.ipc.remoting.IpcChannel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.channel.ChannelOutboundHandlerAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,6 +26,7 @@ public class ClientHandler extends ChannelInboundHandlerAdapter{
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception
     {
+        super.channelInactive(ctx);
         IpcChannel channel = IpcChannel.getOrAddChannel(ctx.channel(), config, client);
         if (channel != null)
         {
@@ -35,6 +37,7 @@ public class ClientHandler extends ChannelInboundHandlerAdapter{
 
     public void channelActive(ChannelHandlerContext ctx) throws Exception
     {
+        super.channelActive(ctx);
         IpcChannel channel = IpcChannel.getOrAddChannel(ctx.channel(), config, client);
         if (channel != null)
         {
@@ -45,9 +48,10 @@ public class ClientHandler extends ChannelInboundHandlerAdapter{
     }
 
     @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg)
+    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception
     {
         //LOG.debug("ClientHandler.channelRead msg is " + msg);
+        //super.channelRead(ctx,msg);
         IpcChannel channel = IpcChannel.getOrAddChannel(ctx.channel(), config, client);
         if (channel != null)
         {
@@ -58,9 +62,10 @@ public class ClientHandler extends ChannelInboundHandlerAdapter{
     }
 
     @Override
-    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause)
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception
     {
         LOG.error("ClientHandler.exceptionCaught",cause);
+        super.exceptionCaught(ctx,cause);
         IpcChannel channel = IpcChannel.getOrAddChannel(ctx.channel(), config, client);
         if (channel != null)
         {

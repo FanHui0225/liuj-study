@@ -76,7 +76,7 @@ public class Client {
                                 Bean2 rs = testAction.test6(new Bean());
                                 System.out.println("test6 结果=" + rs);
                             }
-                            Thread.sleep(5000);
+                            //Thread.sleep(5000);
                             //break;
                         }
                     }catch (Exception ex){

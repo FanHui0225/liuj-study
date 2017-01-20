@@ -44,11 +44,12 @@ public final class ClientProxy extends AbstractClient {
     {
         try
         {
-            ChannelFuture channelFuture = bootstrap.connect(config.getHost(),config.getPort()).sync();
-            channelFuture.awaitUninterruptibly(config.getConnectTimeout(), TimeUnit.MILLISECONDS);
-            if (channelFuture.isSuccess())
+            ChannelFuture channelFuture = bootstrap.connect(config.getHost(),config.getPort()).syncUninterruptibly();
+            boolean ret = channelFuture.awaitUninterruptibly(config.getConnectTimeout(), TimeUnit.MILLISECONDS);
+            if (ret && channelFuture.isSuccess())
             {
                 channel = channelFuture.channel();
+                closed = false;
                 if (NetUtils.toAddressString((InetSocketAddress) channel.remoteAddress())
                         .equals(NetUtils.toAddressString((InetSocketAddress) channel.localAddress()))) {
                     closeChannel();
@@ -66,6 +67,7 @@ public final class ClientProxy extends AbstractClient {
 
     @Override
     protected void doDisConnect() throws IpcRuntimeException {
+        closed = true;
         closeChannel();
         //group.shutdownGracefully().syncUninterruptibly();
     }

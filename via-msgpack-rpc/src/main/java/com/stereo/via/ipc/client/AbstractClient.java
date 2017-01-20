@@ -25,7 +25,6 @@ import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import javax.net.ssl.SSLException;
 import java.net.InetSocketAddress;
 import java.util.Map;
@@ -43,7 +42,7 @@ public abstract class AbstractClient extends AbstractService implements Client, 
     protected Config config;
     protected Bootstrap bootstrap;
     protected EventLoopGroup group;
-    private volatile boolean closed;
+    protected volatile boolean closed;
     protected HeartbeatReport heartbeatReport;
     protected volatile io.netty.channel.Channel channel;
     protected final Map<String, Callback> callbackMap = new ConcurrentHashMap<String, Callback>();
@@ -137,7 +136,7 @@ public abstract class AbstractClient extends AbstractService implements Client, 
     public void doClose() throws IpcRuntimeException {
         group.shutdownGracefully().syncUninterruptibly();
         releaseCallBack();
-        closed = true;
+
     }
 
     @Override
@@ -255,14 +254,19 @@ public abstract class AbstractClient extends AbstractService implements Client, 
         AsyncFuture<T> future = buildFuture(packet);
         try
         {
-            send(packet,true);
-            return future;
+            if (!isClosed())
+            {
+                send(packet,true);
+                return future;
+            }
+            else
+                throw new IpcRuntimeException("client sendPacket connect closed");
         }
         catch (Exception ex)
         {
-            LOG.error("ClientProxy >>> send packet error " + "packet : "+ packet , ex);
+            LOG.error("client >>> send packet error " + "packet : "+ packet , ex);
             removeCallBack(packet.getId());
-            throw new IpcRuntimeException("ClientProxy >>> send packet error " + "packet : "+ packet);
+            throw new IpcRuntimeException("client >>> send packet error " + "packet : "+ packet,ex);
         }
     }
 
@@ -286,13 +290,13 @@ public abstract class AbstractClient extends AbstractService implements Client, 
             setCallback(packet.getId(), callback);
             return future;
         }else
-            throw new IpcRuntimeException("ClientProxy >>> packet error : " + packet);
+            throw new IpcRuntimeException("client >>> packet error : " + packet);
     }
 
     //event
     public void connected(Channel channel) throws IpcRuntimeException
     {
-        LOG.info("channel ["+channel+"] connected");
+        LOG.info("client channel ["+channel+"] connected");
     }
 
     /**
@@ -302,7 +306,7 @@ public abstract class AbstractClient extends AbstractService implements Client, 
      */
     public void disconnected(Channel channel) throws IpcRuntimeException
     {
-        LOG.info("channel ["+channel+"] disconnected");
+        LOG.info("client channel ["+channel+"] disconnected");
     }
 
     /**
@@ -313,7 +317,7 @@ public abstract class AbstractClient extends AbstractService implements Client, 
      */
     public void sent(Channel channel, Object message) throws IpcRuntimeException
     {
-        LOG.info("channel ["+channel+"] sent msg >>> " + message);
+        LOG.info("client channel ["+channel+"] sent msg >>> " + message);
     }
 
     /**
@@ -331,7 +335,7 @@ public abstract class AbstractClient extends AbstractService implements Client, 
             if (callback!=null)
                 callback.call(packet);
             else
-                LOG.debug("received packet:" + packet);
+                LOG.debug("client received packet:" + packet);
             /**
              switch (packet.getType())
              {
@@ -351,7 +355,7 @@ public abstract class AbstractClient extends AbstractService implements Client, 
              }*/
         }
         else
-            LOG.warn("received error msg is " + message);
+            LOG.warn("client channel received error msg is " + message);
     }
 
     /**
