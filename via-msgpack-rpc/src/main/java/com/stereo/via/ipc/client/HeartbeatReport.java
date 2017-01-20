@@ -24,7 +24,7 @@ public class HeartbeatReport extends AbstractService implements Runnable
     }
     private static Logger LOG = LoggerFactory.getLogger(HeartbeatReport.class);
     private Daemon thread;
-    private ClientProxy clientProxy;
+    private AbstractClient client;
     final int heartBeatRate;
     final int heartbeatQuantity;
     volatile boolean running;
@@ -33,12 +33,12 @@ public class HeartbeatReport extends AbstractService implements Runnable
     volatile int wrapSucceed;
     volatile HeartBeatState state;
 
-    public HeartbeatReport(ClientProxy proxy) {
+    public HeartbeatReport(AbstractClient _client) {
         super("HeartbeatReport");
-        clientProxy = proxy;
-        heartbeat = new Heartbeat(proxy.getClientId());
-        heartBeatRate = clientProxy.getConfig().getHeartBeatRate();
-        heartbeatQuantity = clientProxy.getConfig().getHeartBeatQuantity();
+        client = _client;
+        heartbeat = new Heartbeat(_client.getClientId());
+        heartBeatRate = _client.getConfig().getHeartBeatRate();
+        heartbeatQuantity = _client.getConfig().getHeartBeatQuantity();
     }
 
     @Override
@@ -102,9 +102,9 @@ public class HeartbeatReport extends AbstractService implements Runnable
             LOG.info(getName() + " recovering");
             return;
         }
-        AsyncFuture<Packet> future = clientProxy.sendPacket(Packet.packetHeartBeat(heartbeat, type));
+        AsyncFuture<Packet> future = client.sendPacket(Packet.packetHeartBeat(heartbeat, type));
         try {
-            heartbeat = future.get(clientProxy.getConfig().getReadTimeout(), TimeUnit.MILLISECONDS).getHeartbeat();
+            heartbeat = future.get(client.getConfig().getReadTimeout(), TimeUnit.MILLISECONDS).getHeartbeat();
             wrapFailed = 0;
             wrapSucceed++;
             if(wrapSucceed > heartbeatQuantity)

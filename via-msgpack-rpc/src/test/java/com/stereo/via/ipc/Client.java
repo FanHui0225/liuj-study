@@ -21,12 +21,13 @@ public class Client {
         clientProxy.init();
         //连接远程服务
         clientProxy.start();
+
+        clientProxy.reconnect();
+
+
         exc(clientProxy);
         //关闭客户端连接
         clientProxy.close();
-        //clientProxy.init();
-        //clientProxy.start();
-        //exc(clientProxy);
     }
 
     static void exc(final ClientProxy clientProxy)

@@ -6,6 +6,7 @@ import java.net.InetSocketAddress;
 
 public final class Config {
 	private int soLinger = -1;
+	private int timeout = 5 * 1000;
 	private int connectTimeout = 5 * 1000;
 	private int sendTimeout = 5 * 1000;
 	private int readTimeout = 15 * 1000;
@@ -28,6 +29,7 @@ public final class Config {
 	private String businessPoolQueueType = Constants.QUEUE_TYPE_NORMAL;  // 队列类型
 	private int businessPoolQueueSize = 0; // 队列大小
 	private LiveExpired liveExpired;//掉线监控
+	private int connectAccepts;
 
 	public Config(){
 		this(8099);
@@ -229,10 +231,27 @@ public final class Config {
 		this.heartBeatQuantity = heartBeatQuantity;
 	}
 
+	public int getTimeout() {
+		return timeout;
+	}
+
+	public void setTimeout(int timeout) {
+		this.timeout = timeout;
+	}
+
+	public int getConnectAccepts() {
+		return connectAccepts;
+	}
+
+	public void setConnectAccepts(int connectAccepts) {
+		this.connectAccepts = connectAccepts;
+	}
+
 	@Override
 	public String toString() {
 		return "Config{" +
 				"soLinger=" + soLinger +
+				", timeout=" + timeout +
 				", connectTimeout=" + connectTimeout +
 				", sendTimeout=" + sendTimeout +
 				", readTimeout=" + readTimeout +
@@ -254,6 +273,7 @@ public final class Config {
 				", businessPoolQueueType='" + businessPoolQueueType + '\'' +
 				", businessPoolQueueSize=" + businessPoolQueueSize +
 				", liveExpired=" + liveExpired +
+				", connectAccepts=" + connectAccepts +
 				'}';
 	}
 }

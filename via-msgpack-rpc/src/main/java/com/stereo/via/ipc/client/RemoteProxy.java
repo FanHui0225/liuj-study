@@ -90,12 +90,6 @@ public class RemoteProxy implements InvocationHandler {
         }
     }
 
-    private ChannelFuture sendRequest(Packet request) throws InterruptedException
-    {
-        Channel channel = clientProxy.getChannel();
-        return channel.writeAndFlush(request).sync();
-    }
-
     private Object receiveResponse(Packet response)
     {
         Object result = response.getResult();
