@@ -2,6 +2,10 @@ package com.stereo.via.ipc.util;
 
 import net.sf.json.JSONObject;
 import net.sf.json.xml.XMLSerializer;
+import org.dom4j.Document;
+import org.dom4j.DocumentException;
+import org.dom4j.DocumentHelper;
+import org.dom4j.Element;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 import javax.xml.bind.JAXBContext;
@@ -13,6 +17,7 @@ import javax.xml.transform.Source;
 import javax.xml.transform.sax.SAXSource;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.util.*;
 
 public class XmlUtils {
 
@@ -40,7 +45,7 @@ public class XmlUtils {
     public static String object2Xml(Class clazz, Object object) {
 
         StringBuffer xmlBuffer = new StringBuffer();
-        xmlBuffer.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+        xmlBuffer.append("<?xml version=\"1.0\" encoding=\"GBK\"?>");
         try {
             JAXBContext context = JAXBContext.newInstance(clazz);
             Marshaller mar = context.createMarshaller();
@@ -143,5 +148,47 @@ public class XmlUtils {
         }
 
         return object;
+    }
+
+    public static String map2Xml(Map<String,String> map){
+        StringBuffer sb = new StringBuffer();
+        Set<String> set = map.keySet();
+        for(Iterator<String> it = set.iterator(); it.hasNext();){
+            String key = it.next();
+            Object value = map.get(key);
+            sb.append("<").append(key).append(">");
+            sb.append(value);
+            sb.append("</").append(key).append(">");
+        }
+        return sb.toString();
+    }
+
+
+    public static Map<String,Object> xml2Map(String xml){
+        Map<String,Object> map = new HashMap<String,Object>();
+        Document doc;
+        try {
+            doc = DocumentHelper.parseText(xml);
+            Element el = doc.getRootElement();
+            map = recGetXmlElementValue(el,map);
+        } catch (DocumentException e) {
+            e.printStackTrace();
+        }
+        return map;
+    }
+
+    @SuppressWarnings({ "unchecked" })
+    private static Map<String, Object> recGetXmlElementValue(Element ele, Map<String, Object> map){
+        List<Element> eleList = ele.elements();
+        if (eleList.size() == 0) {
+            map.put(ele.getName(), ele.getTextTrim());
+            return map;
+        } else {
+            for (Iterator<Element> iter = eleList.iterator(); iter.hasNext();) {
+                Element innerEle = iter.next();
+                recGetXmlElementValue(innerEle, map);
+            }
+            return map;
+        }
     }
 }
