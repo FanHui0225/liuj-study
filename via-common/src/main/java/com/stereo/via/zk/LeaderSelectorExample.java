@@ -46,7 +46,7 @@ public class LeaderSelectorExample
         {
             for ( int i = 0; i < CLIENT_QTY; ++i )
             {
-                CuratorFramework client = CuratorFrameworkFactory.newClient("zoo1:2181", new ExponentialBackoffRetry(1000, 3));
+                CuratorFramework client = CuratorFrameworkFactory.newClient("127.0.0.1:2181", new ExponentialBackoffRetry(1000, 3));
                 clients.add(client);
 
                 ExampleClient       example = new ExampleClient(client, PATH, "Client #" + i);
