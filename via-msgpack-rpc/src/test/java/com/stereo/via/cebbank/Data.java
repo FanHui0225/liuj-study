@@ -1,9 +1,12 @@
-package com.stereo.via.xml;
+package com.stereo.via.cebbank;
 
 import com.stereo.via.ipc.util.XmlUtils;
+import org.dom4j.Element;
 
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * Created by stereo on 17-3-28.
@@ -11,6 +14,17 @@ import java.util.HashMap;
 public class Data extends HashMap<String,String> implements Serializable {
 
     public static String DATA_FIELD_NAME = "Data";
+
+    public Data(){}
+
+    public Data(Element element)
+    {
+        List<Element> eleList = element.elements();
+        for (Iterator<Element> iter = eleList.iterator(); iter.hasNext();) {
+            Element innerEle = iter.next();
+            putKeyValue(innerEle.getName(),innerEle.getTextTrim());
+        }
+    }
 
     public Data putKeyValue(String key, String value) {
         put(key, value);

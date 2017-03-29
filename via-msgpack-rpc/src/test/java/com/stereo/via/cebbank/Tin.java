@@ -1,4 +1,4 @@
-package com.stereo.via.xml;
+package com.stereo.via.cebbank;
 
 import com.stereo.via.ipc.util.XmlUtils;
 

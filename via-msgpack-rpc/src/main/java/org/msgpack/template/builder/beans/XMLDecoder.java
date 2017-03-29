@@ -35,7 +35,7 @@ import java.util.Stack;
 
 
 /**
- * <code>XMLDecoder</code> reads objects from xml created by
+ * <code>XMLDecoder</code> reads objects from cebbank created by
  * <code>XMLEncoder</code>.
  * <p>
  * The API is similar to <code>ObjectInputStream</code>.
@@ -572,7 +572,7 @@ public class XMLDecoder {
      * Create a decoder to read from specified input stream.
      * 
      * @param inputStream
-     *            an input stream of xml
+     *            an input stream of cebbank
      */
     public XMLDecoder(InputStream inputStream) {
         this(inputStream, null, null, null);
@@ -582,7 +582,7 @@ public class XMLDecoder {
      * Create a decoder to read from specified input stream.
      * 
      * @param inputStream
-     *            an input stream of xml
+     *            an input stream of cebbank
      * @param owner
      *            the owner of this decoder
      */
@@ -594,7 +594,7 @@ public class XMLDecoder {
      * Create a decoder to read from specified input stream.
      * 
      * @param inputStream
-     *            an input stream of xml
+     *            an input stream of cebbank
      * @param owner
      *            the owner of this decoder
      * @param listener
@@ -615,7 +615,7 @@ public class XMLDecoder {
     }
 
     /**
-     * Close the input stream of xml data.
+     * Close the input stream of cebbank data.
      */
     public void close() {
         if (inputStream == null) {

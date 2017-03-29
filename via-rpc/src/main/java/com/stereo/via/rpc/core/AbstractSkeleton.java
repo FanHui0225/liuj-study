@@ -109,7 +109,7 @@ abstract public class AbstractSkeleton {
 		} else if (name.equals("org.w3c.dom.Node")
 				|| name.equals("org.w3c.dom.Element")
 				|| name.equals("org.w3c.dom.Document"))
-			return "xml";
+			return "cebbank";
 		else if (isFull)
 			return name;
 		else {

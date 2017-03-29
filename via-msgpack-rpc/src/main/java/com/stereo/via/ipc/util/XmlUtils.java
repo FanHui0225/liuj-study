@@ -45,7 +45,7 @@ public class XmlUtils {
     public static String object2Xml(Class clazz, Object object) {
 
         StringBuffer xmlBuffer = new StringBuffer();
-        xmlBuffer.append("<?xml version=\"1.0\" encoding=\"GBK\"?>");
+        xmlBuffer.append("<?cebbank version=\"1.0\" encoding=\"GBK\"?>");
         try {
             JAXBContext context = JAXBContext.newInstance(clazz);
             Marshaller mar = context.createMarshaller();

@@ -1,4 +1,4 @@
-package com.stereo.via.xml;
+package com.stereo.via.cebbank;
 
 import java.io.Serializable;
 
@@ -38,7 +38,7 @@ public class In implements Serializable {
     @Override
     public String toString() {
         StringBuffer buffer = new StringBuffer();
-        buffer.append("<?xml version=\"1.0\" encoding=\""+ encoding+"\"?>");
+        buffer.append("<?cebbank version=\"1.0\" encoding=\""+ encoding+"\"?>");
         buffer.append("<in>");
         buffer.append(head);
         buffer.append(tin);

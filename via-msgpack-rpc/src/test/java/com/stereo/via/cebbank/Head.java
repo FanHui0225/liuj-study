@@ -1,5 +1,7 @@
-package com.stereo.via.xml;
+package com.stereo.via.cebbank;
 
+
+import org.dom4j.Element;
 
 import java.io.Serializable;
 
@@ -9,11 +11,42 @@ import java.io.Serializable;
 public class Head implements Serializable{
 
     public static String HEAD_FIELD_NAME = "head";
+    public static String HEAD_VERSION_FIELD_NAME = "Version";
+    public static String HEAD_INSTID_FIELD_NAME = "InstId";
+    public static String HEAD_ANSTRANCODE_FIELD_NAME = "AnsTranCode";
+    public static String HEAD_TRMSEQNUM_FIELD_NAME = "TrmSeqNum";
 
     private String version;
     private String instId;
     private String ansTranCode;
     private String trmSeqNum;
+
+    public Head(Element element)
+    {
+        Element e = element.element(HEAD_VERSION_FIELD_NAME);
+        if (e!=null)
+            version = e.getTextTrim();
+        else
+            throw new RuntimeException("parse cebbank not found version ");
+
+        e = element.element(HEAD_INSTID_FIELD_NAME);
+        if (e!=null)
+            instId = e.getTextTrim();
+        else
+            throw new RuntimeException("parse cebbank not found instId ");
+
+        e = element.element(HEAD_ANSTRANCODE_FIELD_NAME);
+        if (e!=null)
+            ansTranCode = e.getTextTrim();
+        else
+            throw new RuntimeException("parse cebbank not found ansTranCode ");
+
+        e = element.element(HEAD_TRMSEQNUM_FIELD_NAME);
+        if (e!=null)
+            trmSeqNum = e.getTextTrim();
+        else
+            throw new RuntimeException("parse cebbank not found trmSeqNum ");
+    }
 
     public Head(String version, String instId, String ansTranCode, String trmSeqNum) {
         this.version = version;
