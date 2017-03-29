@@ -1,4 +1,4 @@
-package com.stereo.via.cebbank;
+package com.stereo.via.cebbank.dto;
 
 import com.stereo.via.ipc.util.XmlUtils;
 import org.dom4j.Element;

@@ -1,4 +1,4 @@
-package com.stereo.via.cebbank;
+package com.stereo.via.cebbank.dto;
 
 import java.io.Serializable;
 
