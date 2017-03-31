@@ -23,9 +23,21 @@ public class CebBankTest {
         LOG.debug(in.toString());
 
 //        解析
-        Out out = new Out("<?cebbank version=\"1.0\" encoding=\"ISO-8859-1\"?><out><head><Version>1.0.1</Version><InstId>100000000000001</InstId><AnsTranCode>BJCEBQBIRes</AnsTranCode><TrmSeqNum>2010051000013010</TrmSeqNum></head><tout><billKey>123456</billKey><companyId>654321</companyId><item1></item1><item2></item2><item3></item3><item4></item4><item5></item5><item6></item6><item7></item7><totalNum></totalNum><Data><contractNo>123456</contractNo><customerName>张三</customerName><balance></balance><payAmount>2314</payAmount><beginDate></beginDate><endDate></endDate><filed1></filed1><filed2></filed2><filed3></filed3><filed4></filed4><filed5></filed5></Data></tout></out>");
+        Out out = new Out("<?xml version=\"1.0\" encoding=\"GBK\"?><out><head><Version>1.0.1</Version><InstId>100000000000001</InstId><AnsTranCode>BJCEBQBIRes</AnsTranCode><TrmSeqNum>2010051000013010</TrmSeqNum></head><tout><billKey>123456</billKey><companyId>654321</companyId><item1></item1><item2></item2><item3></item3><item4></item4><item5></item5><item6></item6><item7></item7><totalNum></totalNum><Data><contractNo>123456</contractNo><customerName>张三</customerName><balance></balance><payAmount>2314</payAmount><beginDate></beginDate><endDate></endDate><filed1></filed1><filed2></filed2><filed3></filed3><filed4></filed4><filed5></filed5></Data></tout></out>");
         LOG.debug(out.getHead().toString());
         LOG.debug(out.getTout().toString());
         LOG.debug(out.toString());
+            //访问银行网关操作
+            //if(成功){
+            // 返回结果
+            // }
+            //else{//超时
+            //  int loop = 3
+            //  do {
+            //     访问银行查询系统
+            //      loop--;
+            //     }while (loop>0);
+            //    //提交到重试平台
+            // }
     }
 }

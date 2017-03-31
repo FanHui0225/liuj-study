@@ -18,9 +18,12 @@ public class Out implements Serializable {
 
     private Tout tout;
 
+    private String encoding;
+
     public Out(String xml) throws DocumentException {
         Document document = DocumentHelper.parseText(xml);
         Element element = document.getRootElement();
+        encoding = document.getXMLEncoding();
         parse(element);
     }
 
@@ -64,6 +67,7 @@ public class Out implements Serializable {
     public String toString()
     {
         StringBuffer buffer = new StringBuffer();
+        buffer.append("<?xml version=\"1.0\" encoding=\""+ encoding+"\"?>");
         buffer.append("<out>");
         buffer.append(head.toString());
         buffer.append(tout.toString());

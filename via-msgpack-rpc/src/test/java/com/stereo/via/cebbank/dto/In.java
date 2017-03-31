@@ -38,7 +38,7 @@ public class In implements Serializable {
     @Override
     public String toString() {
         StringBuffer buffer = new StringBuffer();
-        buffer.append("<?cebbank version=\"1.0\" encoding=\""+ encoding+"\"?>");
+        buffer.append("<?xml version=\"1.0\" encoding=\""+ encoding+"\"?>");
         buffer.append("<in>");
         buffer.append(head);
         buffer.append(tin);
