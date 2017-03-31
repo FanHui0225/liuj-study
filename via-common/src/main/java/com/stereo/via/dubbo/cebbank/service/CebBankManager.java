@@ -1,7 +1,7 @@
-package com.stereo.via.cebbank.service;
+package com.stereo.via.dubbo.cebbank.service;
 
-import com.stereo.via.cebbank.dto.In;
-import com.stereo.via.cebbank.dto.Out;
+import com.stereo.via.dubbo.cebbank.dto.In;
+import com.stereo.via.dubbo.cebbank.dto.Out;
 
 /**
  * Created by stereo on 17-3-29.

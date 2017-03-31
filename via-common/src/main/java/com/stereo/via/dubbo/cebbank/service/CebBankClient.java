@@ -1,4 +1,4 @@
-package com.stereo.via.cebbank.service;
+package com.stereo.via.dubbo.cebbank.service;
 
 /**
  * Created by stereo on 17-3-29.

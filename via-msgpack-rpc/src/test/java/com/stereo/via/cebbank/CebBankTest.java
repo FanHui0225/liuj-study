@@ -1,6 +1,6 @@
 package com.stereo.via.cebbank;
 
-import com.stereo.via.cebbank.dto.*;
+import com.stereo.via.dubbo.cebbank.dto.*;
 import org.dom4j.DocumentException;
 import org.junit.Test;
 import org.slf4j.Logger;
