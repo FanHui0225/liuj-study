@@ -1,4 +1,4 @@
-package com.stereo.via.ipc.util;
+package com.stereo.via.dubbo.cebbank.util;
 
 import net.sf.json.JSONObject;
 import net.sf.json.xml.XMLSerializer;

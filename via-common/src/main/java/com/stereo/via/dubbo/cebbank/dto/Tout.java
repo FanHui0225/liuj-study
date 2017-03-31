@@ -1,6 +1,6 @@
 package com.stereo.via.dubbo.cebbank.dto;
 
-import com.stereo.via.ipc.util.XmlUtils;
+import com.stereo.via.dubbo.cebbank.util.XmlUtils;
 import org.dom4j.Element;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -16,6 +16,8 @@ public class Tout extends HashMap<String,String> implements Serializable {
     public static String TOUT_FIELD_NAME = "tout";
 
     private List<Data> datas = new ArrayList<Data>();
+
+    public Tout(){}
 
     public Tout(Element element)
     {

@@ -1,8 +1,7 @@
 package com.stereo.via.dubbo.cebbank.dto;
 
-import com.stereo.via.ipc.util.XmlUtils;
+import com.stereo.via.dubbo.cebbank.util.XmlUtils;
 import org.dom4j.Element;
-
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Iterator;

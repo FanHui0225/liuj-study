@@ -1,20 +1,18 @@
-package com.stereo.via.cebbank;
+package com.stereo.via.dubbo.cebbank.test;
 
 import com.stereo.via.dubbo.cebbank.dto.*;
 import org.dom4j.DocumentException;
-import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  * Created by stereo on 17-3-28.
  */
-public class CebBankTest {
+public class CebBankDto2XmlTest {
 
-    private static Logger LOG = LoggerFactory.getLogger(CebBankTest.class);
+    private static Logger LOG = LoggerFactory.getLogger(CebBankDto2XmlTest.class);
 
-    @Test
-    public void test () throws DocumentException {
+    public static void main(String[] args)  throws DocumentException {
 //        生成
         Head Head = new Head("1.0.1","100000000000001","BJCEBRWKReq","2011051300074921");
         Data data = new Data().putKeyValue("key1","value1").putKeyValue("key2","value2").putKeyValue("key3","value3");

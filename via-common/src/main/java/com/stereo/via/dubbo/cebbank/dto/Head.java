@@ -21,6 +21,8 @@ public class Head implements Serializable{
     private String ansTranCode;
     private String trmSeqNum;
 
+    public Head(){}
+
     public Head(Element element)
     {
         Element e = element.element(HEAD_VERSION_FIELD_NAME);

@@ -13,6 +13,8 @@ public class In implements Serializable {
     private Tin tin;
     private String encoding;
 
+    public In(){}
+
     public In(Head head, Tin tin, String encoding) {
         this.head = head;
         this.tin = tin;

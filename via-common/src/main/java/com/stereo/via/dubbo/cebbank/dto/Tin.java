@@ -1,6 +1,6 @@
 package com.stereo.via.dubbo.cebbank.dto;
 
-import com.stereo.via.ipc.util.XmlUtils;
+import com.stereo.via.dubbo.cebbank.util.XmlUtils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -14,6 +14,8 @@ public class Tin extends HashMap<String,String> implements Serializable {
 
 
     private List<Data> datas = new ArrayList<Data>();
+
+    public Tin(){}
 
     public Tin putKeyValue(String key, String value) {
         put(key, value);

@@ -20,6 +20,8 @@ public class Out implements Serializable {
 
     private String encoding;
 
+    public Out(){}
+
     public Out(String xml) throws DocumentException {
         Document document = DocumentHelper.parseText(xml);
         Element element = document.getRootElement();
