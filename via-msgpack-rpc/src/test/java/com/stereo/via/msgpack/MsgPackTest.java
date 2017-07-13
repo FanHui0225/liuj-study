@@ -22,8 +22,14 @@ public class MsgPackTest {
 
     private static final Logger logger = LoggerFactory.getLogger(MsgPackTest.class);
 
-    @Test
-    public void msgpacktest() throws IOException {
+    public static void main(String[] args) throws IOException, InterruptedException {
+
+        MsgPackTest test = new MsgPackTest();
+        test.msgpacktest();
+    }
+
+//    @Test
+    public void msgpacktest() throws IOException, InterruptedException {
         //传输包
         Packet packet = new Packet();
         packet.setId("1-seq");
@@ -60,7 +66,7 @@ public class MsgPackTest {
         Set<UserInfo> p8 = new HashSet<UserInfo>();
         p8.add(new UserInfo());
 
-        FileInputStream fileInputStream = new FileInputStream("D:\\软件工具\\esn_win64.exe");
+        FileInputStream fileInputStream = new FileInputStream("D:\\开发软件\\visualvm_139.zip");
         ByteBuffer byteBuffer = ByteBuffer.allocate(fileInputStream.available());
         byte[] buf = new byte[1024];
         int len = 0;
@@ -79,35 +85,41 @@ public class MsgPackTest {
 
         long start = 0;
 
-        //msgpack序列化
-        MessagePack messagePack = new MessagePack();
-        start = System.currentTimeMillis();
-        byte[] data = messagePack.write(packet);
-        System.out.println("msgpack序列化后 data len is "+ data.length);
-        System.out.println("msgpack序列化时间：" + (System.currentTimeMillis() - start));
+        for (;;)
+        {
+            Thread.sleep(1000);
+            System.out.println("======================================= 测试序列化开始 =======================================");
+            //msgpack序列化
+            MessagePack messagePack = new MessagePack();
+            start = System.currentTimeMillis();
+            byte[] data = messagePack.write(packet);
+            System.out.println("msgpack序列化后 data len is "+ data.length);
+            System.out.println("msgpack序列化时间：" + (System.currentTimeMillis() - start));
 
-        //msgpack反序列化
-        start = System.currentTimeMillis();
-        packet = messagePack.read(data,Packet.class);
-        //System.out.println("msgpack反序列化后 data is " + packet);
-        System.out.println("msgpack反序列化时间：" + (System.currentTimeMillis() - start));
+            //msgpack反序列化
+            start = System.currentTimeMillis();
+            packet = messagePack.read(data,Packet.class);
+            //System.out.println("msgpack反序列化后 data is " + packet);
+            System.out.println("msgpack反序列化时间：" + (System.currentTimeMillis() - start));
 
-        //hessian序列化
-        start = System.currentTimeMillis();
-        ByteArrayOutputStream os = new ByteArrayOutputStream();
-        Hessian2Output hessian2Output = new Hessian2Output(os);
-        hessian2Output.writeObject(packet);
-        hessian2Output.flush();
-        data = os.toByteArray();
-        System.out.println("hessian序列化后 data len is "+ data.length);
-        System.out.println("hessian序列化时间：" + (System.currentTimeMillis() - start));
+            //hessian序列化
+            start = System.currentTimeMillis();
+            ByteArrayOutputStream os = new ByteArrayOutputStream();
+            Hessian2Output hessian2Output = new Hessian2Output(os);
+            hessian2Output.writeObject(packet);
+            hessian2Output.flush();
+            data = os.toByteArray();
+            System.out.println("hessian序列化后 data len is "+ data.length);
+            System.out.println("hessian序列化时间：" + (System.currentTimeMillis() - start));
 
-        //hessian反序列化
-        start = System.currentTimeMillis();
-        ByteArrayInputStream is = new ByteArrayInputStream(data);
-        Hessian2Input hessian2Input = new Hessian2Input(is);
-        packet = (Packet) hessian2Input.readObject();
-        //System.out.println("hessian反序列化后 data is " + packet);
-        System.out.println("hessian反序列化时间：" + (System.currentTimeMillis() - start));
+            //hessian反序列化
+            start = System.currentTimeMillis();
+            ByteArrayInputStream is = new ByteArrayInputStream(data);
+            Hessian2Input hessian2Input = new Hessian2Input(is);
+            packet = (Packet) hessian2Input.readObject();
+            //System.out.println("hessian反序列化后 data is " + packet);
+            System.out.println("hessian反序列化时间：" + (System.currentTimeMillis() - start));
+            System.out.println("======================================= 测试序列化结束 =======================================");
+        }
     }
 }

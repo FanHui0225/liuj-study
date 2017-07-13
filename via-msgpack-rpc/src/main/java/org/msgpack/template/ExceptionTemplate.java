@@ -230,17 +230,17 @@ public class ExceptionTemplate<T> extends AbstractTemplate<T> {
 							{
 								if (Throwable.class.isAssignableFrom(compentType))
 								{
-									values[i] = fieldTemp.read(u, newInstance(compentType));
+									values[j] = fieldTemp.read(u, newInstance(compentType));
 								} else
 								{
 									try {
-										values[i] = fieldTemp.read(u, ClassLoaderUtils.newInstance(compentType));
+										values[j] = fieldTemp.read(u, ClassLoaderUtils.newInstance(compentType));
 									} catch (InstantiationException e) {
-										values[i] = fieldTemp.read(u, null);
+										values[j] = fieldTemp.read(u, null);
 									} catch (NoSuchMethodException e) {
-										values[i] = fieldTemp.read(u, null);
+										values[j] = fieldTemp.read(u, null);
 									} catch (SecurityException e) {
-										values[i] = fieldTemp.read(u, null);
+										values[j] = fieldTemp.read(u, null);
 									}
 								}
 							}
