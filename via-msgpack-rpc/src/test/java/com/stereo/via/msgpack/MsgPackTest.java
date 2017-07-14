@@ -66,7 +66,7 @@ public class MsgPackTest {
         Set<UserInfo> p8 = new HashSet<UserInfo>();
         p8.add(new UserInfo());
 
-        FileInputStream fileInputStream = new FileInputStream("D:\\开发软件\\visualvm_139.zip");
+        FileInputStream fileInputStream = new FileInputStream("D:\\开发软件\\eclipse-inst-win64.exe");
         ByteBuffer byteBuffer = ByteBuffer.allocate(fileInputStream.available());
         byte[] buf = new byte[1024];
         int len = 0;

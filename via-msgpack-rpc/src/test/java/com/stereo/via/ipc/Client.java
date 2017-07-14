@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.regex.Pattern;
 
 /**
  * Created by stereo on 16-8-9.
@@ -33,9 +34,9 @@ public class Client {
     static void exc(final ClientProxy clientProxy)
     {
         //6个线程调用远程接口
-        ExecutorService executor = Executors.newFixedThreadPool(6);
-        for (int i = 0; i < 6; i++) {
-            final int index = i;
+        ExecutorService executor = Executors.newFixedThreadPool(20);
+        for (int i = 0; i < 20; i++) {
+            final int index = i%6;
             executor.execute(new Runnable() {
                 @Override
                 public void run() {
@@ -76,7 +77,7 @@ public class Client {
                                 Bean2 rs = testAction.test6(new Bean());
                                 System.out.println("test6 结果=" + rs);
                             }
-                            Thread.sleep(5000);
+                            Thread.sleep(50);
                             //break;
                         }
                     }catch (Exception ex){
@@ -88,4 +89,16 @@ public class Client {
         executor.shutdown();
         while (!executor.isTerminated());
     }
+
+//    private static String regex_containStr = ".*(张三|张四|呵呵|存储)dd.*";
+//    public static void main(String[] args) {
+//        System.out.println(StringMatchRule("xxxx是存储dd的！", regex_containStr));
+//    }
+//    public static boolean StringMatchRule(String souce, String regex) {
+//        boolean result = false;
+//        if (regex != null && souce != null) {
+//            result = Pattern.matches(regex, souce);
+//        }
+//        return result;
+//    }
 }
