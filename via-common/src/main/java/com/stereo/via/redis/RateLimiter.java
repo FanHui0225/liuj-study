@@ -1,10 +1,9 @@
 package com.stereo.via.redis;
+
 //import org.slf4j.Logger;
 //import org.slf4j.LoggerFactory;
-//import org.springframework.core.io.ClassPathResource;
 //import org.springframework.data.redis.core.RedisTemplate;
 //import org.springframework.data.redis.core.script.DefaultRedisScript;
-//import org.springframework.scripting.support.ResourceScriptSource;
 //import java.util.Arrays;
 //
 ///**
@@ -15,15 +14,33 @@ package com.stereo.via.redis;
 //{
 //    private static final Logger logger = LoggerFactory.getLogger(RateLimiter.class);
 //
+//    private static final String rateLimiterLuaScript =
+//            "local key = \"rate_limit_\" .. KEYS[1]\n" +
+//                    "local limit = tonumber(ARGV[1])\n" +
+//                    "local expire_time = ARGV[2]\n" +
+//                    "local is_exists = redis.call(\"EXISTS\", key)\n" +
+//                    "if is_exists == 1 then\n" +
+//                    "    if redis.call(\"INCR\", key) > limit then\n" +
+//                    "        return 0\n" +
+//                    "    else\n" +
+//                    "        return 1\n" +
+//                    "    end\n" +
+//                    "else\n" +
+//                    "    redis.call(\"SET\", key, 1)\n" +
+//                    "    redis.call(\"EXPIRE\", key, expire_time)\n" +
+//                    "    return 1\n" +
+//                    "end";
+//
 //    private final long period;
 //    private final int limited;
-//    private RedisTemplate<String, Object> redisTemplate;
-//    public RateLimiter(int limited, long period, RedisTemplate redisTemplate)
+//    private RedisTemplate<String, String> redisTemplate;
+//    public RateLimiter(int limited, long period, RedisTemplate<String, String> redisTemplate)
 //    {
 //        this.limited = limited;
 //        this.period = period;
 //        this.redisTemplate = redisTemplate;
-//        setScriptSource(new ResourceScriptSource(new ClassPathResource("rateLimiter.lua")));
+//        //setScriptSource(new ResourceScriptSource(new ClassPathResource("scripts/rateLimiter.lua")));
+//        setScriptText(rateLimiterLuaScript);
 //        setResultType(Long.class);
 //    }
 //
