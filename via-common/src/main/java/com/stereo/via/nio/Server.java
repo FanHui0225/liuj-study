@@ -215,7 +215,9 @@ public class Server {
             count = channelRead(channel, dataBuffer);
 
             if(count >= 0 && dataBuffer.remaining() == 0) {
+                skipHeader = false;
                 process();
+                dataBuffer = null;
             }
 
             return count;
