@@ -8,7 +8,6 @@ import java.nio.ByteBuffer;
 import java.nio.channels.*;
 import java.util.*;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -19,19 +18,26 @@ public class Server {
 
     public static final Log LOG = LogFactory.getLog(Server.class);
 
-    private BlockingQueue<Call> queue = new LinkedBlockingQueue<Call>();
+    //处理请求队列
+    private final static BlockingQueue<Call> queue = new LinkedBlockingQueue<Call>();
 
-    private Queue<Call> responseCalls = new ConcurrentLinkedQueue<Call>();
+    //处理响应队列
+    private final static Queue<Call> responseCalls = new ConcurrentLinkedQueue<Call>();
 
     volatile boolean running = true;
 
-    private Responder responder = null;
+    private Listener listener = null;//监听连接处理器
 
-    private static int NIO_BUFFER_LIMIT = 64 * 1024;
+    private Responder responder = null;//响应请求处理器
 
-    private int handler = 10;
+    private static int NIO_BUFFER_LIMIT = 64 * 1024;//缓冲大小
+
+    private int handler = 10;//处理请求的线程数
 
 
+    /**
+     * 监听客户端连接事件
+     */
     class Listener extends Thread {
 
         Selector selector;
@@ -220,7 +226,7 @@ public class Server {
                 dataBuffer = null;
             }
 
-            return count;
+             return count;
         }
 
 
@@ -281,12 +287,14 @@ public class Server {
             }
         }
 
-
         public void registWriters() throws IOException {
             Iterator<Call> it = responseCalls.iterator();
             while(it.hasNext()) {
                 Call call = it.next();
                 it.remove();
+                //(1)重复注册写事件
+                //call.conn.channel.register(writeSelector, SelectionKey.OP_WRITE, call);
+                //(2)如果已注册，再次interestOps监听写事件
                 SelectionKey key = call.conn.channel.keyFor(writeSelector);
                 try {
                     if (key == null) {
@@ -298,6 +306,7 @@ public class Server {
                                 LOG.trace("the client went away", e);
                         }
                     } else {
+                        key.attach(call);
                         key.interestOps(SelectionKey.OP_WRITE);
                     }
                 } catch (CancelledKeyException e) {
@@ -456,7 +465,8 @@ public class Server {
 
 
     public void start() throws IOException {
-        new Listener(10000).start();
+        listener = new Listener(10000);
+        listener.start();
         responder = new Responder();
         responder.start();
         startHandler();

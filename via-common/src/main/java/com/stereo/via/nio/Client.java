@@ -62,16 +62,14 @@ public class Client {
 
     public void send(String message) throws IOException {
         byte[] data = message.getBytes();
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        DataOutputStream dos = new DataOutputStream(byteArrayOutputStream);
-        dos.writeInt(data.length);
-        dos.write(data);
-        dos.flush();
-        ByteBuffer byteBuffer = ByteBuffer.wrap(byteArrayOutputStream.toByteArray());
-        socketChannel.keyFor(selector).interestOps(SelectionKey.OP_WRITE).attach(byteBuffer);
+        ByteBuffer buffer = ByteBuffer.allocate(4 + data.length);
+        buffer.putInt(data.length);
+        buffer.put(data,0, data.length);
+        buffer.flip();
+        socketChannel.keyFor(selector).interestOps(SelectionKey.OP_WRITE).attach(buffer);
     }
 
-    private static int NIO_BUFFER_LIMIT = 8 * 1024; //限制64KB
+    private static int NIO_BUFFER_LIMIT = 64 * 1024; //限制64KB
 
     public static void main(String[] args) throws IOException {
         final int n = 1;
@@ -145,7 +143,7 @@ public class Client {
                                                 ByteBuffer writeBuf = (ByteBuffer)key.attachment();
                                                 int limit = writeBuf.limit();
                                                 limit64KB_break:
-                                                while (writeBuf.hasRemaining()) {
+                                                while (writeBuf.remaining() > 0) {
                                                     try {
                                                         int ioSize = Math.min(writeBuf.remaining(), NIO_BUFFER_LIMIT);
                                                         writeBuf.limit(writeBuf.position() + ioSize);
