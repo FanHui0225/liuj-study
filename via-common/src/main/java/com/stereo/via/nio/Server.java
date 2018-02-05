@@ -216,6 +216,7 @@ public class Server {
                 dataBufferLength.flip();
                 int dataLength = dataBufferLength.getInt();
                 dataBuffer = ByteBuffer.allocate(dataLength);
+                dataBufferLength.clear();//使用完务必清理
             }
 
             count = channelRead(channel, dataBuffer);
@@ -223,6 +224,7 @@ public class Server {
             if(count >= 0 && dataBuffer.remaining() == 0) {
                 skipHeader = false;
                 process();
+                dataBuffer.clear();
                 dataBuffer = null;
             }
 
