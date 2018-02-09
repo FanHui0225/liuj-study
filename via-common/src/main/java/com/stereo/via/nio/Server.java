@@ -1,5 +1,6 @@
 package com.stereo.via.nio;
 
+import io.netty.buffer.CompositeByteBuf;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import java.io.IOException;
