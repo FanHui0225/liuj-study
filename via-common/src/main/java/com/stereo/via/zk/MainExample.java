@@ -20,8 +20,9 @@ public class MainExample
     private static Logger LOG = LoggerFactory.getLogger(MainExample.class);
 
     public static void main(String[] args) throws Exception {
-        CuratorFramework client = CuratorFrameworkFactory.newClient("zoo1:2181", new ExponentialBackoffRetry(1000, 3));
+        CuratorFramework client = CuratorFrameworkFactory.newClient("10.129.56.219:2183", new ExponentialBackoffRetry(1000, 3));
         client.start();
-        CrudExamples.delete(client,"/examples");
+        List<String> test = client.getChildren().forPath("/");
+        System.out.println(test);
     }
 }
