@@ -1,6 +1,7 @@
 package com.stereo.via.falsesharing;
 
 import java.util.Arrays;
+import sun.misc.Contended;
 
 /**
  * Created by liuj-ai on 2018/6/7.
@@ -51,14 +52,14 @@ public final class FalseSharing implements Runnable {
             longs[arrayIndex].value = i;
         }
     }
-
+//    @Contended
     public final static class VolatileLong {
         public volatile long value = 0L;
-//        public long p1, p2, p3, p4, p5, p6; // 注释
+        public long p1, p2, p3, p4, p5, p6; // 注释
 
-        @Override
-        public String toString() {
-            return String.valueOf(value);
-        }
+//        @Override
+//        public String toString() {
+//            return String.valueOf(value);
+//        }
     }
 }
