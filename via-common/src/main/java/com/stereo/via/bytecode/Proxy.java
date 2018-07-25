@@ -59,6 +59,18 @@ public abstract class Proxy {
     /**
      * Get proxy.
      *
+     *
+     * $0, $1, $2, ...	$0为this ，其他为参数
+     * $args	数组参数Object[]
+     * $$	所有参数m($$) 相当于m($1,$2,...) （除了this）
+     * $cflow(...)	cflow 变量
+     * $r	结果类型
+     * $w	包装类型
+     * $_	结果值
+     * $sig	java.lang.Class数组对象，用来表示每个参数的类型
+     * $type	java.lang.Class 对象表示结果类型
+     * $class	java.lang.Class 对象表示现在这个类的类型
+     *
      * @param cl  class loader.
      * @param ics interface class array.
      * @return Proxy instance.
