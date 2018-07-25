@@ -39,4 +39,13 @@ public class FieldInfo {
         this.fieldComment = fieldComment;
     }
 
+    @Override
+    public String toString() {
+        return "FieldInfo{" +
+                "columnName='" + columnName + '\'' +
+                ", fieldName='" + fieldName + '\'' +
+                ", fieldClass='" + fieldClass + '\'' +
+                ", fieldComment='" + fieldComment + '\'' +
+                '}';
+    }
 }

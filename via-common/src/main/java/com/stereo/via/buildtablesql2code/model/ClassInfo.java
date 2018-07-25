@@ -42,4 +42,13 @@ public class ClassInfo {
 		this.fieldList = fieldList;
 	}
 
+	@Override
+	public String toString() {
+		return "ClassInfo{" +
+				"tableName='" + tableName + '\'' +
+				", className='" + className + '\'' +
+				", classComment='" + classComment + '\'' +
+				", fieldList=" + fieldList +
+				'}';
+	}
 }

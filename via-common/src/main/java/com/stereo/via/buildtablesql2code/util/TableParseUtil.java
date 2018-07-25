@@ -146,5 +146,4 @@ public class TableParseUtil {
 
         return codeJavaInfo;
     }
-
 }
