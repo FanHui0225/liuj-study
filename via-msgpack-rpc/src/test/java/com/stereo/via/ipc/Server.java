@@ -13,7 +13,7 @@ public class Server {
     public static void main(String[] params) throws Exception {
 
         //创建服务
-        IpcServer ipcServer = new IpcServer(new Config("127.0.0.1",10093));
+        IpcServer ipcServer = new IpcServer(new Config(10093));
         //初始化
         ipcServer.init();
         //启动
