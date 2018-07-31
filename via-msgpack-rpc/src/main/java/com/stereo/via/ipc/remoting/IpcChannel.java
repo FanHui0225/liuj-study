@@ -1,7 +1,7 @@
 package com.stereo.via.ipc.remoting;
 
 import com.stereo.via.ipc.Config;
-import com.stereo.via.ipc.exc.IpcRuntimeException;
+import com.stereo.via.ipc.exc.ViaRuntimeException;
 import io.netty.channel.ChannelFuture;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -74,7 +74,7 @@ public final class IpcChannel extends AbstractChannel {
         return channel.isActive();
     }
 
-    public void send(Object message, boolean sent) throws IpcRuntimeException {
+    public void send(Object message, boolean sent) throws ViaRuntimeException {
         super.send(message, sent);
         
         boolean success = true;
@@ -90,11 +90,11 @@ public final class IpcChannel extends AbstractChannel {
                 throw cause;
             }
         } catch (Throwable e) {
-            throw new IpcRuntimeException("Failed to send message " + message + " to " + getRemoteAddress() + ", cause: " + e.getMessage(), e);
+            throw new ViaRuntimeException("Failed to send message " + message + " to " + getRemoteAddress() + ", cause: " + e.getMessage(), e);
         }
         
         if(! success) {
-            throw new IpcRuntimeException("Failed to send message " + message + " to " + getRemoteAddress()
+            throw new ViaRuntimeException("Failed to send message " + message + " to " + getRemoteAddress()
                     + "in timeout(" + timeout + "ms) limit");
         }
     }

@@ -3,7 +3,7 @@ package com.stereo.via.ipc.client;
 import com.stereo.via.ipc.Config;
 import com.stereo.via.ipc.exc.ClientConnectException;
 import com.stereo.via.ipc.exc.ClientTimeoutException;
-import com.stereo.via.ipc.exc.IpcRuntimeException;
+import com.stereo.via.ipc.exc.ViaRuntimeException;
 import com.stereo.via.ipc.util.NetUtils;
 import io.netty.channel.*;
 import java.lang.reflect.InvocationHandler;
@@ -40,7 +40,7 @@ public class ClientProxy extends AbstractClient {
     }
 
     @Override
-    protected void doConnect() throws IpcRuntimeException
+    protected void doConnect() throws ViaRuntimeException
     {
         try
         {
@@ -61,12 +61,12 @@ public class ClientProxy extends AbstractClient {
             }
         }catch (Exception ex)
         {
-            throw new IpcRuntimeException(ex);
+            throw new ViaRuntimeException(ex);
         }
     }
 
     @Override
-    protected void doDisConnect() throws IpcRuntimeException {
+    protected void doDisConnect() throws ViaRuntimeException {
         closed = true;
         closeChannel();
         //group.shutdownGracefully().syncUninterruptibly();

@@ -1,6 +1,6 @@
 package com.stereo.via.ipc.remoting;
 
-import com.stereo.via.ipc.exc.IpcRuntimeException;
+import com.stereo.via.ipc.exc.ViaRuntimeException;
 
 public interface ChannelHandler {
 
@@ -9,14 +9,14 @@ public interface ChannelHandler {
      * 
      * @param channel channel.
      */
-    void connected(Channel channel) throws IpcRuntimeException;
+    void connected(Channel channel) throws ViaRuntimeException;
 
     /**
      * on channel disconnected.
      * 
      * @param channel channel.
      */
-    void disconnected(Channel channel) throws IpcRuntimeException;
+    void disconnected(Channel channel) throws ViaRuntimeException;
 
     /**
      * on message sent.
@@ -24,7 +24,7 @@ public interface ChannelHandler {
      * @param channel channel.
      * @param message message.
      */
-    void sent(Channel channel, Object message) throws IpcRuntimeException;
+    void sent(Channel channel, Object message) throws ViaRuntimeException;
 
     /**
      * on message received.
@@ -32,7 +32,7 @@ public interface ChannelHandler {
      * @param channel channel.
      * @param message message.
      */
-    void received(Channel channel, Object message) throws IpcRuntimeException;
+    void received(Channel channel, Object message) throws ViaRuntimeException;
 
     /**
      * on exception caught.
@@ -40,5 +40,5 @@ public interface ChannelHandler {
      * @param channel channel.
      * @param exception exception.
      */
-    void caught(Channel channel, Throwable exception) throws IpcRuntimeException;
+    void caught(Channel channel, Throwable exception) throws ViaRuntimeException;
 }

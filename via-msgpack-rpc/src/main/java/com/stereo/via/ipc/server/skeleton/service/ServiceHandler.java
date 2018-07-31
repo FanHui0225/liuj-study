@@ -1,6 +1,7 @@
 package com.stereo.via.ipc.server.skeleton.service;
 
 import com.stereo.via.event.Event;
+import com.stereo.via.ipc.exc.ViaRuntimeException;
 import com.stereo.via.ipc.server.api.ISkeletonContext;
 import com.stereo.via.ipc.server.event.RequestEvent;
 import com.stereo.via.ipc.server.event.ResponseEvent;
@@ -11,7 +12,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.stereo.via.ipc.Config;
 import com.stereo.via.ipc.Constants;
-import com.stereo.via.ipc.exc.IpcRuntimeException;
 import com.stereo.via.ipc.server.api.IServiceHandler;
 import com.stereo.via.ipc.server.api.IServiceInvoker;
 import com.stereo.via.ipc.server.event.enums.ServiceEnum;
@@ -48,7 +48,7 @@ public class ServiceHandler extends AbstractService implements IServiceHandler{
             maxPoolSize = Math.max(minPoolSize, maxPoolSize);
             aliveTime = 60000;
         } else {
-            throw new IpcRuntimeException("HandlerPool-"+ config.getBusinessPoolType());
+            throw new ViaRuntimeException("HandlerPool-"+ config.getBusinessPoolType());
         }
         boolean isPriority = Constants.QUEUE_TYPE_PRIORITY.equals(config.getBusinessPoolQueueType());
         BlockingQueue<Runnable> configQueue = ThreadPoolUtils.buildQueue(config.getBusinessPoolQueueSize(), isPriority);

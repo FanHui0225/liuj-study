@@ -18,7 +18,7 @@ public class Client {
     public static void main(String[] params) throws Exception
     {
         //创建客户连接代理
-        final ClientProxy clientProxy = new ClientProxy(new Config( "127.0.0.1" , 10092 ));
+        final ClientProxy clientProxy = new ClientProxy(new Config( "127.0.0.1" , 10093 ));
         //初始化连接
         clientProxy.init();
         //连接远程服务

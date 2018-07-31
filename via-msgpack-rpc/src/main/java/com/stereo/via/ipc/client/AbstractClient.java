@@ -4,7 +4,7 @@ import com.stereo.via.ipc.Config;
 import com.stereo.via.ipc.Packet;
 import com.stereo.via.ipc.codec.MsgPackDecoder;
 import com.stereo.via.ipc.codec.MsgPackEncoder;
-import com.stereo.via.ipc.exc.IpcRuntimeException;
+import com.stereo.via.ipc.exc.ViaRuntimeException;
 import com.stereo.via.ipc.remoting.Channel;
 import com.stereo.via.ipc.remoting.ChannelHandler;
 import com.stereo.via.ipc.remoting.Client;
@@ -71,11 +71,11 @@ public abstract class AbstractClient extends AbstractService implements Client, 
         doClose();
     }
 
-    protected abstract void doConnect() throws IpcRuntimeException;
-    protected abstract void doDisConnect() throws IpcRuntimeException;
+    protected abstract void doConnect() throws ViaRuntimeException;
+    protected abstract void doDisConnect() throws ViaRuntimeException;
 
     @Override
-    public void doOpen() throws IpcRuntimeException {
+    public void doOpen() throws ViaRuntimeException {
         //心跳初始化
         heartbeatReport = new HeartbeatReport(this);
         heartbeatReport.init();
@@ -87,7 +87,7 @@ public abstract class AbstractClient extends AbstractService implements Client, 
                         .trustManager(InsecureTrustManagerFactory.INSTANCE).build();
             } catch (SSLException e) {
                 e.printStackTrace();
-                throw  new IpcRuntimeException(e);
+                throw  new ViaRuntimeException(e);
             }
         } else {
             sslCtx = null;
@@ -133,14 +133,14 @@ public abstract class AbstractClient extends AbstractService implements Client, 
     }
 
     @Override
-    public void doClose() throws IpcRuntimeException {
+    public void doClose() throws ViaRuntimeException {
         group.shutdownGracefully().syncUninterruptibly();
         releaseCallBack();
 
     }
 
     @Override
-    public void reconnect() throws IpcRuntimeException {
+    public void reconnect() throws ViaRuntimeException {
         doDisConnect();
         doConnect();
     }
@@ -206,12 +206,12 @@ public abstract class AbstractClient extends AbstractService implements Client, 
     }
 
     @Override
-    public void send(Object message) throws IpcRuntimeException {
+    public void send(Object message) throws ViaRuntimeException {
         getChannel().send(message);
     }
 
     @Override
-    public void send(Object message, boolean sent) throws IpcRuntimeException {
+    public void send(Object message, boolean sent) throws ViaRuntimeException {
         getChannel().send(message,sent);
     }
 
@@ -260,13 +260,13 @@ public abstract class AbstractClient extends AbstractService implements Client, 
                 return future;
             }
             else
-                throw new IpcRuntimeException("client sendPacket connect closed");
+                throw new ViaRuntimeException("client sendPacket connect closed");
         }
         catch (Exception ex)
         {
             LOG.error("client >>> send packet error " + "packet : "+ packet , ex);
             removeCallBack(packet.getId());
-            throw new IpcRuntimeException("client >>> send packet error " + "packet : "+ packet,ex);
+            throw new ViaRuntimeException("client >>> send packet error " + "packet : "+ packet,ex);
         }
     }
 
@@ -290,11 +290,11 @@ public abstract class AbstractClient extends AbstractService implements Client, 
             setCallback(packet.getId(), callback);
             return future;
         }else
-            throw new IpcRuntimeException("client >>> packet error : " + packet);
+            throw new ViaRuntimeException("client >>> packet error : " + packet);
     }
 
     //event
-    public void connected(Channel channel) throws IpcRuntimeException
+    public void connected(Channel channel) throws ViaRuntimeException
     {
         LOG.info("client channel ["+channel+"] connected");
     }
@@ -304,7 +304,7 @@ public abstract class AbstractClient extends AbstractService implements Client, 
      *
      * @param channel channel.
      */
-    public void disconnected(Channel channel) throws IpcRuntimeException
+    public void disconnected(Channel channel) throws ViaRuntimeException
     {
         LOG.info("client channel ["+channel+"] disconnected");
     }
@@ -315,7 +315,7 @@ public abstract class AbstractClient extends AbstractService implements Client, 
      * @param channel channel.
      * @param message message.
      */
-    public void sent(Channel channel, Object message) throws IpcRuntimeException
+    public void sent(Channel channel, Object message) throws ViaRuntimeException
     {
         LOG.info("client channel ["+channel+"] sent msg >>> " + message);
     }
@@ -326,7 +326,7 @@ public abstract class AbstractClient extends AbstractService implements Client, 
      * @param channel channel.
      * @param message message.
      */
-    public void received(Channel channel, Object message) throws IpcRuntimeException
+    public void received(Channel channel, Object message) throws ViaRuntimeException
     {
         if(message instanceof Packet)
         {
@@ -364,7 +364,7 @@ public abstract class AbstractClient extends AbstractService implements Client, 
      * @param channel channel.
      * @param exception exception.
      */
-    public void caught(Channel channel, Throwable exception) throws IpcRuntimeException
+    public void caught(Channel channel, Throwable exception) throws ViaRuntimeException
     {
         LOG.error("caught error msg is " + exception);
         reconnect();

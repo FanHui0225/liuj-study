@@ -3,7 +3,6 @@ package com.stereo.via.ipc.client;
 import com.stereo.via.ipc.Constants;
 import com.stereo.via.ipc.Heartbeat;
 import com.stereo.via.ipc.Packet;
-import com.stereo.via.ipc.exc.IpcRuntimeException;
 import com.stereo.via.ipc.util.Daemon;
 import com.stereo.via.service.AbstractService;
 import org.slf4j.Logger;
