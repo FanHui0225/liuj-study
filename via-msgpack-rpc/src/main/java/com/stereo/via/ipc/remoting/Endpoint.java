@@ -2,7 +2,8 @@
 package com.stereo.via.ipc.remoting;
 
 import com.stereo.via.ipc.Config;
-import com.stereo.via.ipc.exc.IpcRuntimeException;
+import com.stereo.via.ipc.exc.ViaRuntimeException;
+
 import java.net.InetSocketAddress;
 
 public interface Endpoint {
@@ -32,9 +33,9 @@ public interface Endpoint {
      * send message.
      *
      * @param message
-     * @throws IpcRuntimeException
+     * @throws ViaRuntimeException
      */
-    void send(Object message) throws IpcRuntimeException;
+    void send(Object message) throws ViaRuntimeException;
 
     /**
      * send message.
@@ -42,7 +43,7 @@ public interface Endpoint {
      * @param message
      * @param sent 是否已发送完成
      */
-    void send(Object message, boolean sent) throws IpcRuntimeException;
+    void send(Object message, boolean sent) throws ViaRuntimeException;
 
     /**
      * is closed.

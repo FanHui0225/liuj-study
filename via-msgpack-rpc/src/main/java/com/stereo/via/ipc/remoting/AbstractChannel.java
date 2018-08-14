@@ -1,7 +1,7 @@
 package com.stereo.via.ipc.remoting;
 
 import com.stereo.via.ipc.Config;
-import com.stereo.via.ipc.exc.IpcRuntimeException;
+import com.stereo.via.ipc.exc.ViaRuntimeException;
 
 public abstract class AbstractChannel implements Channel, ChannelHandler {
 
@@ -16,9 +16,9 @@ public abstract class AbstractChannel implements Channel, ChannelHandler {
         this.handler = handler;
     }
 
-    public void send(Object message, boolean sent) throws IpcRuntimeException {
+    public void send(Object message, boolean sent) throws ViaRuntimeException {
         if (isClosed()) {
-            throw new IpcRuntimeException("Failed to send message "
+            throw new ViaRuntimeException("Failed to send message "
                                               + (message == null ? "" : message.getClass().getName()) + ":" + message
                                               + ", cause: Channel closed. channel: " + getLocalAddress() + " -> " + getRemoteAddress());
         }
@@ -55,12 +55,12 @@ public abstract class AbstractChannel implements Channel, ChannelHandler {
     }
 
     @Override
-    public void send(Object message) throws IpcRuntimeException {
+    public void send(Object message) throws ViaRuntimeException {
         send(message, false);
     }
 
     @Override
-    public void connected(Channel ch) throws IpcRuntimeException {
+    public void connected(Channel ch) throws ViaRuntimeException {
         if (closed) {
             return;
         }
@@ -68,26 +68,26 @@ public abstract class AbstractChannel implements Channel, ChannelHandler {
     }
 
     @Override
-    public void disconnected(Channel ch) throws IpcRuntimeException {
+    public void disconnected(Channel ch) throws ViaRuntimeException {
         handler.disconnected(ch);
     }
 
 
-    public void sent(Channel ch, Object msg) throws IpcRuntimeException {
+    public void sent(Channel ch, Object msg) throws ViaRuntimeException {
         if (closed) {
             return;
         }
         handler.sent(ch, msg);
     }
 
-    public void received(Channel ch, Object msg) throws IpcRuntimeException {
+    public void received(Channel ch, Object msg) throws ViaRuntimeException {
         if (closed) {
             return;
         }
         handler.received(ch, msg);
     }
 
-    public void caught(Channel ch, Throwable ex) throws IpcRuntimeException {
+    public void caught(Channel ch, Throwable ex) throws ViaRuntimeException {
         handler.caught(ch, ex);
     }
 }
