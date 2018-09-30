@@ -4,10 +4,6 @@ package com.stereo.via.util;
  * Created by liuj-ai on 2018/6/28.
  */
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-
 /**
  * Twitter_Snowflake<br> SnowFlake的结构如下(每部分用-分开):<br> 0 - 0000000000 0000000000 0000000000 0000000000 0 - 00000 - 00000
  * - 000000000000 <br> 1位标识，由于long基本类型在Java中是带符号的，最高位是符号位，正数是0，负数是1，所以id一般是正数，最高位是0<br>
@@ -20,7 +16,7 @@ public class SnowflakeIdWorker {
 
     // ==============================Fields===========================================
     /** 开始时间截 (2015-01-01) */
-    private final long twepoch = 1420041600000L;
+    private static final long twepoch = 1_497_220_815_106L;
 
     /** 机器id所占的位数 */
     private final long workerIdBits = 5L;
@@ -145,32 +141,62 @@ public class SnowflakeIdWorker {
 
     //==============================Test=============================================
 
-
-
     static final int hash(Object key) {
         int h;
         return (key == null) ? 0 : (h = key.hashCode()) ^ (h >>> 16);
     }
 
-    /** 测试 */
-    public static void main(String[] args) {
-        SnowflakeIdWorker idWorker = new SnowflakeIdWorker(0, 0);
-        Map<Long, Integer> map = new HashMap<>();
-        for (long i = 0; i < 512; i++) {
-            map.put(i, 0);
-        }
-        for (int i = 0; i < 1000; i++) {
-            long id = idWorker.nextId();
-//            System.out.println("SnowflakeIdWorker.main id="+id);
-            int h = hash(id);
-            long bucket = (512 - 1) & h;
-            int count = map.get(bucket);
-            count++;
-            map.put(bucket, count);
-        }
+    /** 测试反解析 */
+    public static void main(String[] args) throws InterruptedException {
+        SnowflakeIdWorker idWorker = new SnowflakeIdWorker(1, 2);
+        long id = idWorker.nextId();
+        long sequence = (id) & ~(-1L << 12); // sequence
+        System.out.println("sequence:"+sequence);
+        long workerId = (id >> 12) & ~(-1L << 5); // workerId
+        System.out.println("workerId:"+workerId);
+        long datacenterId = (id >> 17) & ~(-1L << 5); // datacenterId
+        System.out.println("datacenterId:"+datacenterId);
+        long timestamp = (id >> 22) + twepoch; // timestamp
+        System.out.println("timestamp:"+timestamp);
+//        long timestamp = (id >> 12) + twepoch; // timestamp
+//        long wi = (id >> (9)) & ~(-1L << 3);
+//        long sq = (id) & ~(-1L << 9);  // timestamp
+//        System.out.println("id:" + 103477859407872L);
+//        System.out.println("时间戳:" + timestamp);
+//        System.out.println("workerId:" + wi);
+//        System.out.println("sequence:" + sq);
 
-        for (Map.Entry<Long, Integer> s : map.entrySet()) {
-            System.out.println("SnowflakeIdWorker.main    bucket=" + s.getKey() + "   count=" + s.getValue());
-        }
+//        byte[] bytes = Bytes.long2bytes(id);
+//        System.out.println(bytes.length);
+//        System.out.println(Long.toBinaryString(-2));
+
+//        while (true) {
+//            long id = idWorker.nextId();
+//
+//            Bytes.long2bytes(id);
+//            int y = (1024 - 1) & hash(id);
+//            System.out.println("表索引:" + y  + "    库索引:"  + y/(1024/128));
+//            Thread.sleep(100);
+//        }
+        //        int x = y / (1024 / 128);
+//        System.out.println("x = " + x + "   y = " + y);
+
+//        Map<Long, Integer> map = new HashMap<>();
+//        for (long i = 0; i < 512; i++) {
+//            map.put(i, 0);
+//        }
+//        for (int i = 0; i < 1000; i++) {
+//            long id = idWorker.nextId();
+////            System.out.println("SnowflakeIdWorker.main id="+id);
+//            int h = hash(id);
+//            long bucket = (512 - 1) & h;
+//            int count = map.get(bucket);
+//            count++;
+//            map.put(bucket, count);
+//        }
+//
+//        for (Map.Entry<Long, Integer> s : map.entrySet()) {
+//            System.out.println("SnowflakeIdWorker.main    bucket=" + s.getKey() + "   count=" + s.getValue());
+//        }
     }
 }
