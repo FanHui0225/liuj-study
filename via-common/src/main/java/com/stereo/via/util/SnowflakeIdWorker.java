@@ -158,6 +158,12 @@ public class SnowflakeIdWorker {
         System.out.println("datacenterId:"+datacenterId);
         long timestamp = (id >> 22) + twepoch; // timestamp
         System.out.println("timestamp:"+timestamp);
+
+
+
+
+
+
 //        long timestamp = (id >> 12) + twepoch; // timestamp
 //        long wi = (id >> (9)) & ~(-1L << 3);
 //        long sq = (id) & ~(-1L << 9);  // timestamp
