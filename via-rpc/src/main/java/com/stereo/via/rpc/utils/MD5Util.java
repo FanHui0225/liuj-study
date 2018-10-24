@@ -132,6 +132,6 @@ public class MD5Util {
 	}
 
 	public static void main(String[] args) throws Exception {
-		System.out.println(getFileMD5String(new File("/home/stereo/批量部署.zip")));
+		System.out.println(getMD5String("lj198911120613"));
 	}
 }
