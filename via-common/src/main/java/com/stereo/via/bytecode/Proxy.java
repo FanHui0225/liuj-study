@@ -1,23 +1,7 @@
-/*
- * Copyright 1999-2011 Alibaba Group.
- *  
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *  
- *      http://www.apache.org/licenses/LICENSE-2.0
- *  
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.stereo.via.bytecode;
 
 import com.stereo.via.bytecode.utils.ClassHelper;
 import com.stereo.via.bytecode.utils.ReflectUtils;
-
 import java.lang.ref.Reference;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.InvocationHandler;
@@ -26,6 +10,11 @@ import java.lang.reflect.Modifier;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 
+/**
+ * javassist实现 动态代理
+ *
+ * Created by liuj-ai on 2019/1/15.
+ */
 public abstract class Proxy {
     public static final InvocationHandler RETURN_NULL_INVOKER = new InvocationHandler() {
         public Object invoke(Object proxy, Method method, Object[] args) {
@@ -46,35 +35,10 @@ public abstract class Proxy {
     protected Proxy() {
     }
 
-    /**
-     * Get proxy.
-     *
-     * @param ics interface class array.
-     * @return Proxy instance.
-     */
     public static Proxy getProxy(Class<?>... ics) {
         return getProxy(ClassHelper.getClassLoader(Proxy.class), ics);
     }
 
-    /**
-     * Get proxy.
-     *
-     *
-     * $0, $1, $2, ...	$0为this ，其他为参数
-     * $args	数组参数Object[]
-     * $$	所有参数m($$) 相当于m($1,$2,...) （除了this）
-     * $cflow(...)	cflow 变量
-     * $r	结果类型
-     * $w	包装类型
-     * $_	结果值
-     * $sig	java.lang.Class数组对象，用来表示每个参数的类型
-     * $type	java.lang.Class 对象表示结果类型
-     * $class	java.lang.Class 对象表示现在这个类的类型
-     *
-     * @param cl  class loader.
-     * @param ics interface class array.
-     * @return Proxy instance.
-     */
     public static Proxy getProxy(ClassLoader cl, Class<?>... ics) {
         if (ics.length > 65535)
             throw new IllegalArgumentException("interface limit exceeded");
@@ -97,10 +61,8 @@ public abstract class Proxy {
             sb.append(itf).append(';');
         }
 
-        // use interface class name list as key.
         String key = sb.toString();
 
-        // get cache by class loader.
         Map<String, Object> cache;
         synchronized (ProxyCacheMap) {
             cache = ProxyCacheMap.get(cl);
@@ -165,8 +127,10 @@ public abstract class Proxy {
                     Class<?>[] pts = method.getParameterTypes();
 
                     StringBuilder code = new StringBuilder("Object[] args = new Object[").append(pts.length).append("];");
-                    for (int j = 0; j < pts.length; j++)
+                    for (int j = 0; j < pts.length; j++) {
+                        //$w代表包装类 $0代表this，$1，$2，$3 ...表示实际的参数
                         code.append(" args[").append(j).append("] = ($w)$").append(j + 1).append(";");
+                    }
                     code.append(" Object ret = handler.invoke(this, methods[" + ix + "], args);");
                     if (!Void.TYPE.equals(rt))
                         code.append(" return ").append(asArgument(rt, "ret")).append(";");
@@ -179,17 +143,15 @@ public abstract class Proxy {
             if (pkg == null)
                 pkg = PACKAGE_NAME;
 
-            // create ProxyInstance class.
             String pcn = pkg + ".proxy" + id;
             ccp.setClassName(pcn);
             ccp.addField("public static java.lang.reflect.Method[] methods;");
             ccp.addField("private " + InvocationHandler.class.getName() + " handler;");
-            ccp.addConstructor(Modifier.PUBLIC, new Class<?>[]{InvocationHandler.class}, new Class<?>[0], "handler=$1;");
+            ccp.addConstructor(Modifier.PUBLIC, new Class<?>[] {InvocationHandler.class}, new Class<?>[0], "handler=$1;");
             ccp.addDefaultConstructor();
             Class<?> clazz = ccp.toClass();
             clazz.getField("methods").set(null, methods.toArray(new Method[0]));
 
-            // create Proxy class.
             String fcn = Proxy.class.getName() + id;
             ccm = ClassGenerator.newInstance(cl);
             ccm.setClassName(fcn);
@@ -203,7 +165,6 @@ public abstract class Proxy {
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage(), e);
         } finally {
-            // release ClassGenerator
             if (ccp != null)
                 ccp.release();
             if (ccm != null)
@@ -242,19 +203,9 @@ public abstract class Proxy {
         return "(" + ReflectUtils.getName(cl) + ")" + name;
     }
 
-    /**
-     * get instance with default handler.
-     *
-     * @return instance.
-     */
     public Object newInstance() {
         return newInstance(THROW_UNSUPPORTED_INVOKER);
     }
 
-    /**
-     * get instance with special handler.
-     *
-     * @return instance.
-     */
     abstract public Object newInstance(InvocationHandler handler);
 }
