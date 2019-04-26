@@ -16,6 +16,10 @@ public class Standard {
     }
 
 
+    /**
+     * -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=8000
+     * @param args
+     */
     public static void main(String[] args) {
         Standard standard = new Standard();
         standard.doSomething();
