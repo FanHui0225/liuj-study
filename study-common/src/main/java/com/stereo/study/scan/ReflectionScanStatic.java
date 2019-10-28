@@ -12,6 +12,8 @@ import org.slf4j.LoggerFactory;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by liuj-ai on 2018/3/13.
@@ -33,6 +35,20 @@ public class ReflectionScanStatic implements ScanStaticStrategy {
         analysis(scanModel);
 
         return scanModel;
+    }
+
+    public static void main(String[] args) throws InterruptedException {
+        Pattern pattern = Pattern.compile("\\*\\s+from\\s+[\\w\\[\\]]*\\.?[\\w\\[\\]]*\\.?\\[?(\\b\\w+)\\]?[\\r\\n\\s]*");
+//        Matcher matcher = pattern.matcher("select * from a.b.c");
+        String str = "multipart/form-data; boundary=\"(.*)\"";
+        String sql = "multipart/form-data; boundary=\"25e00f16-5518-490e-9741-d431a261f123\"";
+        System.out.println(Pattern.matches(sql,sql));
+        Pattern p = Pattern.compile(str);
+        Matcher matcher = p.matcher(sql);
+        while (matcher.find()) {
+            String string = matcher.group(1);
+            System.out.println(string);
+        }
     }
 
     /**

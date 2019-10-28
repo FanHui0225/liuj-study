@@ -29,14 +29,11 @@ import java.security.PrivilegedExceptionAction;
 public abstract class AbstractTemplate<T> implements Template<T> {
 
     private static final Unsafe THE_UNSAFE;
-    static
-    {
-        try
-        {
-            final PrivilegedExceptionAction<Unsafe> action = new PrivilegedExceptionAction<Unsafe>()
-            {
-                public Unsafe run() throws Exception
-                {
+
+    static {
+        try {
+            final PrivilegedExceptionAction<Unsafe> action = new PrivilegedExceptionAction<Unsafe>() {
+                public Unsafe run() throws Exception {
                     Field theUnsafe = Unsafe.class.getDeclaredField("theUnsafe");
                     theUnsafe.setAccessible(true);
                     return (Unsafe) theUnsafe.get(null);
@@ -44,15 +41,12 @@ public abstract class AbstractTemplate<T> implements Template<T> {
             };
 
             THE_UNSAFE = AccessController.doPrivileged(action);
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             throw new RuntimeException("Unable to load unsafe", e);
         }
     }
 
-    protected Unsafe getUnsafe()
-    {
+    protected Unsafe getUnsafe() {
         return THE_UNSAFE;
     }
 
