@@ -15,7 +15,7 @@ public class WheelTimerQueueTest {
 
     public static void main(String[] args) {
         test1();
-        test2();
+//        test2();
     }
 
     public static void test1() {
