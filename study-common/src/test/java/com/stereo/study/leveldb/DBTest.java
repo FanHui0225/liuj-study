@@ -43,7 +43,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.nio.MappedByteBuffer;
+import java.nio.channels.FileChannel;
 import java.util.*;
+import java.util.concurrent.Executors;
 
 import static org.fusesource.leveldbjni.JniDBFactory.asString;
 import static org.fusesource.leveldbjni.JniDBFactory.bytes;
@@ -60,6 +63,14 @@ public class DBTest extends TestCase {
 
     @Test
     public void testOpen() throws IOException {
+//        HashMap hashMap;
+//        hashMap.put()
+//        FileChannel fileChannel ;
+//        MappedByteBuffer byteBuffer;
+//
+//        fileChannel.map()
+//        fileChannel.transferTo();
+//        fileChannel.transferFrom()
 
         Options options = new Options().createIfMissing(true);
 
