@@ -1,7 +1,5 @@
 package com.stereo.study.util;
 
-import org.omg.CORBA.PUBLIC_MEMBER;
-
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicLong;
@@ -22,7 +20,6 @@ public class TestLock {
         }
         a2.incrementAndGet();
     }
-
 
     public void unlock() {
         if (a2.decrementAndGet() == 0) {
@@ -57,7 +54,7 @@ public class TestLock {
         }
         executorService.shutdown();
         while (!executorService.isTerminated()) {
-            Thread.sleep(10L);
+            Thread.sleep(1L);
         }
         System.out.println(testLock.a1.get());
         System.out.println(testLock.a2.get());
