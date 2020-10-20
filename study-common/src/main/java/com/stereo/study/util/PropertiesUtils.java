@@ -1,4 +1,4 @@
-package com.stereo.study.asychttp;
+package com.stereo.study.util;
 
 import java.io.IOException;
 import java.util.*;
@@ -27,8 +27,7 @@ public final class PropertiesUtils
         {
             JSONObject root = new JSONObject();
             properties.forEach((k,v) ->
-            {
-                JSONObject tmpJsonObj;
+            {                JSONObject tmpJsonObj;
                 if ( k != null && v !=null )
                 {
                     String key = String.valueOf(k);
