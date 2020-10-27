@@ -119,7 +119,6 @@ public class DBTest extends TestCase {
 
         // leveldb does not consider deleting something that does not exist an error.
         db.delete(bytes("New York"), wo);
-
         db.close();
     }
 
