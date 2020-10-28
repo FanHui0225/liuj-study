@@ -37,10 +37,10 @@ public class CloudtTest {
                         } catch (Exception ex) {
                             ex.printStackTrace();
                         } finally {
-//                            try {
-//                                Thread.sleep(1000L);
-//                            } catch (InterruptedException e) {
-//                            }
+                            try {
+                                Thread.sleep(1000L);
+                            } catch (InterruptedException e) {
+                            }
                         }
                     }
                 }
