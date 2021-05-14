@@ -1,6 +1,8 @@
 package com.stereo.study.solution;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by liuj-ai on 2021/4/28.
@@ -115,6 +117,26 @@ public class Solution {
         return arr[arr.length - 1];
     }
 
+    public static void arrFindTwoNumSum(int[] arr, int sum) {
+        if (arr.length <= 1) {
+            return;
+        }
+        List<Integer> list = new ArrayList<>();
+        for (int i = 0; i < arr.length; i++) {
+            int ii = arr[i];
+            for (int j = i + 1; j < arr.length; j++) {
+                int jj = arr[j];
+                if (ii + jj == sum) {
+                    if (!list.contains(i) && !list.contains(j)) {
+                        System.out.println("Find TwoNum i = " + i + "   j = " + j);
+                        list.add(i);
+                        list.add(j);
+                    }
+                }
+            }
+        }
+    }
+
     public static void main(String[] args) {
 //        int length = 3;
 //        int start = 0;
@@ -126,6 +148,7 @@ public class Solution {
         //    输入: s = "abcabcbb"  pwwkew
 //        System.out.println(Arrays.toString(findTxt("pwwkew")));
 //        System.out.println(lengthOfLongestSubstring("pwwkew"));
-        System.out.println(zws(new int[]{1, 2, 3, 4, 10, 11}, new int[]{55, 66, 77, 88, 99, 100}));
+//        System.out.println(zws(new int[]{1, 2, 3, 4, 10, 11}, new int[]{55, 66, 77, 88, 99, 100}));
+        arrFindTwoNumSum(new int[]{100, 22, 9, 33, 43, 52, 61, 7, 8, 91, 1, 9, 8, 2, 1}, 10);
     }
 }
