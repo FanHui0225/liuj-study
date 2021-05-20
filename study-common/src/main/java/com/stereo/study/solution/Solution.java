@@ -137,6 +137,27 @@ public class Solution {
         }
     }
 
+    public static boolean searchMatrix(int[][] matrix, int target) {
+        if (matrix == null || matrix.length == 0) {
+            return false;
+        }
+        int x = matrix.length - 1;
+        int y = 0;
+        int[] row1 = matrix[0];
+        int maxY = row1.length - 1;
+        while (x >= 0 && y <= maxY) {
+            int item = matrix[x][y];
+            if (item > target) {
+                x--;
+            } else if (item < target) {
+                y++;
+            } else {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static void main(String[] args) {
 //        int length = 3;
 //        int start = 0;
@@ -145,10 +166,12 @@ public class Solution {
 //            list[j] = j + 1;
 //        }
 //        arrage(list, start, length);
-        //    输入: s = "abcabcbb"  pwwkew
+//        //输入: s = "abcabcbb"  pwwkew
 //        System.out.println(Arrays.toString(findTxt("pwwkew")));
 //        System.out.println(lengthOfLongestSubstring("pwwkew"));
 //        System.out.println(zws(new int[]{1, 2, 3, 4, 10, 11}, new int[]{55, 66, 77, 88, 99, 100}));
-        arrFindTwoNumSum(new int[]{100, 22, 9, 33, 43, 52, 61, 7, 8, 91, 1, 9, 8, 2, 1}, 10);
+//        arrFindTwoNumSum(new int[]{100, 22, 9, 33, 43, 52, 61, 7, 8, 91, 1, 9, 8, 2, 1}, 10);
+//        int[][] matrix = new int[][]{{1, 4, 7, 11, 15}, {2, 5, 8, 12, 19}, {3, 6, 9, 16, 22}, {10, 13, 14, 17, 24}, {18, 21, 23, 26, 30}};
+//        System.out.println("searchMatrix 5 > " + searchMatrix(matrix, 30));
     }
 }
