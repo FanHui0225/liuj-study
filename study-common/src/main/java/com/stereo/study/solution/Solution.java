@@ -158,6 +158,70 @@ public class Solution {
         return false;
     }
 
+    /**
+     * 原地删除数组中的元素
+     * 给你一个有序数组 nums ，请你 原地 删除重复出现的元素，使每个元素 只出现一次 ，返回删除后数组的新长度。
+     * 不要使用额外的数组空间，你必须在 原地 修改输入数组 并在使用 O(1) 额外空间的条件下完成。
+     * <p>
+     * //如果左指针和右指针指向的值一样，说明有重复的，
+     * //这个时候，左指针不动，右指针继续往右移。如果他俩
+     * //指向的值不一样就把右指针指向的值往前挪
+     */
+    public static List<int[]> inPlaceRemove(int[] nums) {
+        //1 1 1 1 1 2 3 4 5 6 7 8
+        int j = 0;
+        for (int i = 1; i < nums.length; i++) {
+            int c = nums[i];
+            int p = nums[j];
+            if (p != c) {
+                if (j + 1 == i) {
+                    j++;
+                } else {
+                    nums[++j] = c;
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 给定一个数组 prices ，其中 prices[i] 是一支给定股票第 i 天的价格。
+     * <p>
+     * 设计一个算法来计算你所能获取的最大利润。你可以尽可能地完成更多的交易（多次买卖一支股票）。
+     * <p>
+     * 注意：你不能同时参与多笔交易（你必须在再次购买前出售掉之前的股票）。
+     * <p>
+     * 示例 1:
+     * <p>
+     * 输入: prices = [7,1,5,3,6,4]
+     * 输出: 7
+     * 解释: 在第 2 天（股票价格 = 1）的时候买入，在第 3 天（股票价格 = 5）的时候卖出, 这笔交易所能获得利润 = 5-1 = 4 。
+     *      随后，在第 4 天（股票价格 = 3）的时候买入，在第 5 天（股票价格 = 6）的时候卖出, 这笔交易所能获得利润 = 6-3 = 3 。
+     * 示例 2:
+     * <p>
+     * 输入: prices = [1,2,3,4,5]
+     * 输出: 4
+     * 解释: 在第 1 天（股票价格 = 1）的时候买入，在第 5 天 （股票价格 = 5）的时候卖出, 这笔交易所能获得利润 = 5-1 = 4 。
+     *      注意你不能在第 1 天和第 2 天接连购买股票，之后再将它们卖出。因为这样属于同时参与了多笔交易，你必须在再次购买前出售掉之前的股票。
+     * 示例 3:
+     * <p>
+     * 输入: prices = [7,6,4,3,1]
+     * 输出: 0
+     * 解释: 在这种情况下, 没有交易完成, 所以最大利润为 0。
+     * <p>
+     * 作者：力扣 (LeetCode)
+     * 链接：https://leetcode-cn.com/leetbook/read/top-interview-questions-easy/x2zsx1/
+     * 来源：力扣（LeetCode）
+     * 著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+     *
+     * @param prices
+     * @return
+     */
+    public static int maxProfit(int[] prices) {
+        return 0;
+    }
+
+
     public static void main(String[] args) {
 //        int length = 3;
 //        int start = 0;
@@ -173,5 +237,10 @@ public class Solution {
 //        arrFindTwoNumSum(new int[]{100, 22, 9, 33, 43, 52, 61, 7, 8, 91, 1, 9, 8, 2, 1}, 10);
 //        int[][] matrix = new int[][]{{1, 4, 7, 11, 15}, {2, 5, 8, 12, 19}, {3, 6, 9, 16, 22}, {10, 13, 14, 17, 24}, {18, 21, 23, 26, 30}};
 //        System.out.println("searchMatrix 5 > " + searchMatrix(matrix, 30));
+
+
+//        System.out.println((char)39);
+//        System.out.println((char)92);
+//        System.out.println((char)34);
     }
 }
