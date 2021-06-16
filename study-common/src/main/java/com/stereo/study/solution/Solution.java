@@ -209,18 +209,40 @@ public class Solution {
      * 输出: 0
      * 解释: 在这种情况下, 没有交易完成, 所以最大利润为 0。
      * <p>
-     * 作者：力扣 (LeetCode)
-     * 链接：https://leetcode-cn.com/leetbook/read/top-interview-questions-easy/x2zsx1/
-     * 来源：力扣（LeetCode）
-     * 著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+     * 1，动态规划解决
+     * 定义dp[i][0]表示第i+1天交易完之后手里没有股票的最大利润，dp[i][1]表示第i+1天交易完之后手里持有股票的最大利润。
+     * 当天交易完之后手里没有股票可能有两种情况，一种是当天没有进行任何交易，又因为当天手里没有股票，所以当天没有股票的利润只能取前一天手里没有股票的利润。
+     * 一种是把当天手里的股票给卖了，既然能卖，说明手里是有股票的，所以这个时候当天没有股票的利润要取前一天手里有股票的利润加上当天股票能卖的价格。这两种情况我们取利润最大的即可，所以可以得到
+     * dp[i][0]=max(dp[i-1][0],dp[i-1][1]+prices[i]);
+     * 当天交易完之后手里持有股票也有两种情况，一种是当天没有任何交易，又因为当天手里持有股票，所以当天手里持有的股票其实前一天就已经持有了。
+     * 还一种是当天买入了股票，当天能买股票，说明前一天手里肯定是没有股票的，我们取这两者的最大值，所以可以得到
+     * dp[i][1]=max(dp[i-1][1],dp[i-1][0]-prices[i]);
+     * 动态规划的递推公式有了，那么边界条件是什么，就是第一天
+     * 如果买入：dp[0][1]=-prices[0];
+     * 如果没买：dp[0][0]=0;
      *
      * @param prices
-     * @return
+     * @return [7, 1, 5, 3, 6, 4]
      */
     public static int maxProfit(int[] prices) {
-        return 0;
+        if (prices == null || prices.length < 2)
+            return 0;
+        int length = prices.length;
+        int[][] dp = new int[length][2];
+        //初始条件
+        dp[0][1] = -prices[0];
+        dp[0][0] = 0;
+        System.out.println("[0] = " + dp[0][0] + " -------- " + "[1] = " + dp[0][1]);
+        for (int i = 1; i < length; i++) {
+            //递推公式
+            dp[i][0] = Math.max(dp[i - 1][0], dp[i - 1][1] + prices[i]);
+            dp[i][1] = Math.max(dp[i - 1][1], dp[i - 1][0] - prices[i]);
+            System.out.println("[0] = " + dp[i][0] + " -------- " + "[1] = " + dp[i][1]);
+        }
+        //最后一天肯定是手里没有股票的时候，利润才会最大，
+        //只需要返回dp[length - 1][0]即可
+        return dp[length - 1][0];
     }
-
 
     public static void main(String[] args) {
 //        int length = 3;
@@ -237,10 +259,7 @@ public class Solution {
 //        arrFindTwoNumSum(new int[]{100, 22, 9, 33, 43, 52, 61, 7, 8, 91, 1, 9, 8, 2, 1}, 10);
 //        int[][] matrix = new int[][]{{1, 4, 7, 11, 15}, {2, 5, 8, 12, 19}, {3, 6, 9, 16, 22}, {10, 13, 14, 17, 24}, {18, 21, 23, 26, 30}};
 //        System.out.println("searchMatrix 5 > " + searchMatrix(matrix, 30));
-
-
-//        System.out.println((char)39);
-//        System.out.println((char)92);
-//        System.out.println((char)34);
+        int maxProfit = maxProfit(new int[]{7, 1, 5, 3, 6, 4});
+        System.out.println("maxProfit = " + maxProfit);
     }
 }
