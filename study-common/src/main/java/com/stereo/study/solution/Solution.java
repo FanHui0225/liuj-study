@@ -220,7 +220,6 @@ public class Solution {
             while (index < length - 1 && prices[index] >= prices[index + 1]) {
                 index++;
             }
-
             int min = prices[index];
             while (index < length - 1 && prices[index] <= prices[index + 1]) {
                 index++;
@@ -230,6 +229,51 @@ public class Solution {
             index++;
         }
         return total;
+    }
+
+    /**
+     * 给定一个数组，将数组中的元素向右移动k个位置，其中k是非负数。
+     * 进阶：
+     * 尽可能想出更多的解决方案，至少有三种不同的方法可以解决这个问题。
+     * 你可以使用空间复杂度为 O(1) 的 原地 算法解决这个问题吗？
+     * <p>
+     * 示例 1:
+     * 输入: nums = [1,2,3,4,5,6,7], k = 3
+     * 输出: [5,6,7,1,2,3,4]
+     * 解释:
+     * 向右旋转 1 步: [7,1,2,3,4,5,6]
+     * 向右旋转 2 步: [6,7,1,2,3,4,5]
+     * 向右旋转 3 步: [5,6,7,1,2,3,4]
+     * <p>
+     * <p>
+     * 示例 2:
+     * 输入：nums = [-1,-100,3,99], k = 2
+     * 输出：[3,99,-1,-100]
+     * 解释:
+     * 向右旋转 1 步: [99,-1,-100,3]
+     * 向右旋转 2 步: [3,99,-1,-100]
+     *
+     * @param nums
+     * @param k
+     */
+    public static void rotate(int[] nums, int k) {
+        int hold = nums[0];
+        int index = 0;
+        int length = nums.length;
+        boolean[] visited = new boolean[length];
+        for (int i = 0; i < length; i++) {
+            index = (index + k) % length;
+            if (visited[index]) {
+                index = (index + 1) % length;
+                hold = nums[index];
+                i--;
+            } else {
+                visited[index] = true;
+                int temp = nums[index];
+                nums[index] = hold;
+                hold = temp;
+            }
+        }
     }
 
     public static void main(String[] args) {
@@ -247,7 +291,8 @@ public class Solution {
 //        arrFindTwoNumSum(new int[]{100, 22, 9, 33, 43, 52, 61, 7, 8, 91, 1, 9, 8, 2, 1}, 10);
 //        int[][] matrix = new int[][]{{1, 4, 7, 11, 15}, {2, 5, 8, 12, 19}, {3, 6, 9, 16, 22}, {10, 13, 14, 17, 24}, {18, 21, 23, 26, 30}};
 //        System.out.println("searchMatrix 5 > " + searchMatrix(matrix, 30));
-        System.out.println(inPlaceRemove(new int[]{1, 1, 1, 1, 1, 2, 3, 4, 5, 6, 7, 8}));
-        System.out.println(maxProfit(new int[]{7, 1, 5, 3, 6, 4}));
+//        System.out.println(inPlaceRemove(new int[]{1, 1, 1, 1, 1, 2, 3, 4, 5, 6, 7, 8}));
+//        System.out.println(maxProfit(new int[]{7, 1, 5, 3, 6, 4}));
+//        System.out.println(maxProfit(new int[]{7, 6, 5, 3, 2, 1}));
     }
 }
