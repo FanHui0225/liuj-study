@@ -295,7 +295,7 @@ public class Solution {
 //        System.out.println(maxProfit(new int[]{7, 1, 5, 3, 6, 4}));
 //        System.out.println(maxProfit(new int[]{7, 6, 5, 3, 2, 1}));
         int[] nums = new int[]{0, 1, 2, 3, 4, 5, 6, 7};
-        rotate(nums, 3);
+        rotate(nums, 4);
         System.out.println(Arrays.toString(nums));
     }
 }
