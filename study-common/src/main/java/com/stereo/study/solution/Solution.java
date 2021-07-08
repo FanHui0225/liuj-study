@@ -257,21 +257,21 @@ public class Solution {
      * @param k
      */
     public static void rotate(int[] nums, int k) {
-        int hold = nums[0];
+        int c = nums[0];
         int index = 0;
-        int length = nums.length;
-        boolean[] visited = new boolean[length];
-        for (int i = 0; i < length; i++) {
-            index = (index + k) % length;
+        int len = nums.length;
+        boolean[] visited = new boolean[len];
+        for (int i = 0; i < len; i++) {
+            index = (index + k) % len;
             if (visited[index]) {
-                index = (index + 1) % length;
-                hold = nums[index];
+                index = (index + 1) % len;
+                c = nums[index];
                 i--;
             } else {
                 visited[index] = true;
-                int temp = nums[index];
-                nums[index] = hold;
-                hold = temp;
+                int tmp = nums[index];
+                nums[index] = c;
+                c = tmp;
             }
         }
     }
@@ -294,5 +294,8 @@ public class Solution {
 //        System.out.println(inPlaceRemove(new int[]{1, 1, 1, 1, 1, 2, 3, 4, 5, 6, 7, 8}));
 //        System.out.println(maxProfit(new int[]{7, 1, 5, 3, 6, 4}));
 //        System.out.println(maxProfit(new int[]{7, 6, 5, 3, 2, 1}));
+        int[] nums = new int[]{0, 1, 2, 3, 4, 5, 6, 7};
+        rotate(nums, 3);
+        System.out.println(Arrays.toString(nums));
     }
 }
