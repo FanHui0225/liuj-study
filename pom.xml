@@ -9,6 +9,7 @@
         <module>study-rpc</module>
         <module>study-msgpack-rpc</module>
         <module>study-common</module>
+        <module>study-olap</module>
     </modules>
     <packaging>pom</packaging>
 
